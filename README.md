@@ -30,74 +30,40 @@ pnpm run start
 
 ## 📋 Available Commands
 
-### 🚀 Quick Start
+### 🚀 Main Commands
+- **`pnpm run start`** → Start everything (Supabase + Apps + Functions)
+- **`pnpm run dev`** → Development only (requires Supabase running)
+- **`pnpm run build`** → Build entire project
+- **`pnpm run stop`** → Stop all services
 
-```bash
-# Start everything (database + apps + functions)
-pnpm run start
+### 🗄️ Supabase (Complete Services)
+- **`pnpm run supabase:start`** → Start Supabase (DB + Auth + Storage + Functions + Studio)
+- **`pnpm run supabase:stop`** → Stop Supabase
+- **`pnpm run supabase:status`** → Supabase status
+- **`pnpm run supabase:studio`** → Supabase Studio only
 
-# Start only apps (requires external database)
-pnpm run start:apps
+### 🗃️ Database (DB Specific)
+- **`pnpm run db:reset`** → Reset database
+- **`pnpm run db:migrate`** → Run migrations
+- **`pnpm run db:seed`** → Seed database
 
-# Start only database + functions
-pnpm run start:db
-
-# Stop everything
-pnpm run stop
-```
-
-### 🗄️ Database
-
-```bash
-# Start database
-pnpm run db:start
-
-# Stop database
-pnpm run db:stop
-
-# Reset database
-pnpm run db:reset
-
-# Check database status
-pnpm run db:status
-```
+### 🖥️ Applications
+- **`pnpm run start:apps`** → Start apps + functions only
+- **`pnpm run stop:apps`** → Stop apps only
+- **`pnpm run start:functions`** → Functions only
 
 ### ⚡ Edge Functions
-
-```bash
-# Serve Edge Functions
-pnpm run functions:serve
-
-# Deploy Edge Functions
-pnpm run functions:deploy
-
-# Test Edge Function
-pnpm run functions:test
-```
+- **`pnpm run functions:serve`** → Serve Edge Functions with hot reloading
+- **`pnpm run functions:deploy`** → Deploy functions
+- **`pnpm run functions:test`** → Test functions
+- **`pnpm run functions:format`** → Format functions
+- **`pnpm run functions:lint`** → Lint functions
 
 ### 🔧 Development Tools
-
-```bash
-# Linting
-pnpm run lint
-pnpm run lint:fix
-
-# Formatting
-pnpm run format
-pnpm run format:fix
-
-# Type checking
-pnpm run type-check
-
-# Build
-pnpm run build
-
-# Tests
-pnpm run test
-
-# Open Supabase Studio
-pnpm run studio
-```
+- **`pnpm run lint`** → Lint entire project
+- **`pnpm run format`** → Format entire project
+- **`pnpm run check-types`** → Type checking
+- **`pnpm run clean`** → Clean generated files
 
 ## 🏗️ Architecture
 
@@ -177,12 +143,37 @@ pnpm run build
 pnpm run functions:deploy
 ```
 
-## 📝 Development
+## 🔄 Development Workflow
 
-### Workflow
+### 1. First time or complete reset
+```bash
+pnpm run start
+```
+
+### 2. Daily development (with Supabase running)
+```bash
+pnpm run dev
+```
+
+### 3. Supabase only
+```bash
+pnpm run supabase:start
+```
+
+### 4. Functions only
+```bash
+pnpm run start:functions
+```
+
+### 5. Stop everything
+```bash
+pnpm run stop
+```
+
+### Development Process
 
 1. **Create branch**: `git checkout -b feature/new-feature`
-2. **Develop**: Use `pnpm run start`
+2. **Develop**: Use `pnpm run start` or `pnpm run dev`
 3. **Test**: `pnpm run test`
 4. **Lint**: `pnpm run lint:fix`
 5. **Commit**: `git commit -m "feat: new feature"`
@@ -212,8 +203,8 @@ kill -9 <PID>
 **Database not responding:**
 ```bash
 # Restart Supabase
-pnpm run db:stop
-pnpm run db:start
+pnpm run supabase:stop
+pnpm run supabase:start
 ```
 
 **Edge Functions not loading:**
@@ -221,6 +212,11 @@ pnpm run db:start
 # Restart everything
 pnpm run stop
 pnpm run start
+```
+
+**Check Supabase status:**
+```bash
+pnpm run supabase:status
 ```
 
 ## 📚 Documentation
