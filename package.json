@@ -9,9 +9,36 @@
 		"lint": "turbo run lint",
 		"lint:fix": "turbo run lint:fix",
 		"format": "turbo run format",
-		"format:check": "turbo run format:check",
+		"format:fix": "turbo run format:fix",
 		"check-types": "turbo run check-types",
-		"clean": "turbo run clean"
+		"clean": "turbo run clean",
+
+		"start": "pnpm run supabase:start && pnpm run start:apps",
+		"start:apps": "concurrently \"pnpm run dev\" \"pnpm run functions:serve\"",
+		"start:studio": "supabase studio",
+
+		"stop": "concurrently \"pnpm run supabase:stop\" \"pkill -f turbo\" \"pkill -f next\" \"pkill -f astro\"",
+		"stop:apps": "pkill -f turbo && pkill -f next && pkill -f astro",
+
+		"supabase:start": "supabase start",
+		"supabase:stop": "supabase stop",
+		"supabase:status": "supabase status",
+		"supabase:studio": "supabase studio",
+
+		"db:reset": "supabase db reset",
+		"db:migrate": "supabase db migrate",
+		"db:seed": "supabase db seed",
+
+		"functions:serve": "supabase functions serve",
+		"functions:deploy": "supabase functions deploy",
+		"functions:test": "curl -X GET http://localhost:54321/functions/v1/test",
+		"functions:format": "biome format ./supabase",
+		"functions:format:fix": "biome format ./supabase --write",
+		"functions:lint": "biome lint ./supabase",
+		"functions:lint:fix": "biome lint ./supabase --write",
+
+		"test": "turbo run test",
+		"type-check": "turbo run type-check"
 	},
 	"keywords": [],
 	"author": "",
@@ -19,6 +46,7 @@
 	"packageManager": "pnpm@10.17.0",
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.4",
-		"turbo": "^2.5.6"
+		"turbo": "^2.5.6",
+		"concurrently": "^9.1.0"
 	}
 }

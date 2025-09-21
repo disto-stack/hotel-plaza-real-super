@@ -10,7 +10,7 @@
 		"lint": "biome lint",
 		"lint:fix": "biome lint --write",
 		"format": "biome format",
-		"format:check": "biome format",
+		"format:fix": "biome format --write",
 		"clean": "rm -rf dist"
 	},
 	"dependencies": {

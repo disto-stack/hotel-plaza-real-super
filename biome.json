@@ -10,11 +10,13 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"**",
+			"supabase/functions/**/*.ts",
 			"!**/dist",
 			"!**/*.generated.js",
 			"!**/node_modules",
 			"!**/.next",
 			"!**/.astro",
+			"!**/.vscode",
 			"!**/build",
 			"!**/coverage",
 			"!**/logs",
