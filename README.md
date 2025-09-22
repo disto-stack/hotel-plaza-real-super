@@ -14,17 +14,10 @@ Sistema completo de gestión hotelera con administración, sitio web público y 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone <repository-url>
 cd hotel-plaza-real-super
-
-# Install dependencies
 pnpm install
-
-# Configure environment
 cp env.example .env.local
-
-# Start development
 pnpm run start
 ```
 
@@ -32,8 +25,7 @@ pnpm run start
 
 ### 🚀 Main Commands
 - **`pnpm run start`** → Start everything (Supabase + Apps + Functions)
-- **`pnpm run dev`** → Development only (requires Supabase running)
-- **`pnpm run build`** → Build entire project
+- **`pnpm run dev`** → Development only (Apps + Functions, requires Supabase running)
 - **`pnpm run stop`** → Stop all services
 
 ### 🗄️ Supabase (Complete Services)
@@ -47,23 +39,38 @@ pnpm run start
 - **`pnpm run db:migrate`** → Run migrations
 - **`pnpm run db:seed`** → Seed database
 
-### 🖥️ Applications
-- **`pnpm run start:apps`** → Start apps + functions only
-- **`pnpm run stop:apps`** → Stop apps only
-- **`pnpm run start:functions`** → Functions only
+### 🖥️ Applications (Apps Only)
+- **`pnpm run apps:dev`** → Start apps only
+- **`pnpm run apps:lint`** → Lint apps only
+- **`pnpm run apps:lint:fix`** → Lint and fix apps
+- **`pnpm run apps:format`** → Format apps only
+- **`pnpm run apps:format:fix`** → Format and fix apps
+- **`pnpm run apps:check-types`** → Type check apps
+- **`pnpm run apps:clean`** → Clean apps
+- **`pnpm run apps:test`** → Test apps only
+- **`pnpm run apps:test:watch`** → Test apps in watch mode
+- **`pnpm run apps:test:ui`** → Test apps with UI
+- **`pnpm run apps:test:coverage`** → Test apps with coverage
 
 ### ⚡ Edge Functions
 - **`pnpm run functions:serve`** → Serve Edge Functions with hot reloading
 - **`pnpm run functions:deploy`** → Deploy functions
 - **`pnpm run functions:test`** → Test functions
+- **`pnpm run functions:test:watch`** → Test functions in watch mode
 - **`pnpm run functions:format`** → Format functions
+- **`pnpm run functions:format:fix`** → Format and fix functions
 - **`pnpm run functions:lint`** → Lint functions
+- **`pnpm run functions:lint:fix`** → Lint and fix functions
+- **`pnpm run functions:check-types`** → Type check functions
 
-### 🔧 Development Tools
-- **`pnpm run lint`** → Lint entire project
+### 🔧 Development Tools (All Projects)
+- **`pnpm run lint`** → Lint entire project (apps + functions)
+- **`pnpm run lint:fix`** → Lint and fix entire project
 - **`pnpm run format`** → Format entire project
-- **`pnpm run check-types`** → Type checking
-- **`pnpm run clean`** → Clean generated files
+- **`pnpm run format:fix`** → Format and fix entire project
+- **`pnpm run check-types`** → Type checking entire project
+- **`pnpm run test`** → Run all tests (apps + functions)
+- **`pnpm run test:watch`** → Run all tests in watch mode
 
 ## 🏗️ Architecture
 
@@ -90,6 +97,7 @@ hotel-plaza-real-super/
 - **Authentication**: Supabase Auth
 - **Monorepo**: Turbo, pnpm
 - **Linting**: Biome
+- **Testing**: Vitest (Node.js), Deno Test (Functions)
 - **Deployment**: Vercel, Supabase
 
 ## 🌐 Development URLs
@@ -108,12 +116,9 @@ hotel-plaza-real-super/
 Copy `env.example` to `.env.local` and configure:
 
 ```bash
-# Supabase
 SUPABASE_URL=http://localhost:54321
 SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# Applications
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_WEB_URL=http://localhost:3001
 ```
@@ -129,17 +134,13 @@ The database is configured automatically with:
 ### Development
 
 ```bash
-# Start complete environment
 pnpm run start
 ```
 
 ### Production
 
 ```bash
-# Build all applications
 pnpm run build
-
-# Deploy Edge Functions
 pnpm run functions:deploy
 ```
 
@@ -162,7 +163,7 @@ pnpm run supabase:start
 
 ### 4. Functions only
 ```bash
-pnpm run start:functions
+pnpm run functions:serve
 ```
 
 ### 5. Stop everything
@@ -184,7 +185,7 @@ pnpm run stop
 - **Commits**: Conventional Commits
 - **Code**: Strict TypeScript
 - **Linting**: Biome
-- **Testing**: Jest/Vitest
+- **Testing**: Vitest/Deno Test
 - **Documentation**: JSDoc
 
 ## 🐛 Troubleshooting
@@ -193,23 +194,18 @@ pnpm run stop
 
 **Port in use:**
 ```bash
-# Check what's using the port
 lsof -i :3000
-
-# Kill process
 kill -9 <PID>
 ```
 
 **Database not responding:**
 ```bash
-# Restart Supabase
 pnpm run supabase:stop
 pnpm run supabase:start
 ```
 
 **Edge Functions not loading:**
 ```bash
-# Restart everything
 pnpm run stop
 pnpm run start
 ```
