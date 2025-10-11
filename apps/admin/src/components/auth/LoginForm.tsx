@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useAuthStore } from "@/store/authStore";
 
 export default function LoginForm() {
 	const [email, setEmail] = useState("");
@@ -12,6 +13,8 @@ export default function LoginForm() {
 
 	const supabase = createClient();
 	const router = useRouter();
+
+	const { setUser } = useAuthStore();
 
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -33,11 +36,18 @@ export default function LoginForm() {
 
 			const { data: userData } = await supabase
 				.from("users")
-				.select("role")
+				.select("*")
 				.eq("id", data.user?.id)
 				.single();
 
-			if (userData?.role === "admin") {
+			if (!userData) {
+				setError("User not found");
+				return;
+			}
+
+			setUser(userData);
+
+			if (userData.role === "admin") {
 				router.push("/dashboard");
 			} else {
 				router.push("/reception");
