@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "pnpm run supabase:start && pnpm run dev",
-		"dev": "concurrently \"pnpm run dev\" \"pnpm run functions:serve\"",
+		"dev": "concurrently \"pnpm run apps:dev\" \"pnpm run functions:serve\"",
 		"lint": "pnpm run apps:lint & pnpm run functions:lint",
 		"lint:fix": "pnpm run apps:lint:fix & pnpm run functions:lint:fix",
 		"format": "pnpm run apps:format & pnpm run functions:format",
@@ -30,10 +30,15 @@
 		"supabase:start": "supabase start",
 		"supabase:stop": "supabase stop",
 		"supabase:status": "supabase status",
-		"supabase:studio": "supabase studio",
 
-		"db:reset": "supabase db reset",
-		"db:migrate": "supabase db migrate",
+		"migration:new": "supabase migration new",
+		"migration:up": "supabase migration up",
+		"migration:down": "supabase migration down",
+		"migration:list": "supabase migration list",
+
+		"db:reset:local": "supabase db reset",
+		"db:push:local": "supabase db up --local",
+		"db:push:remote": "supabase db push",
 		"db:seed": "supabase db seed",
 
 		"functions:serve": "supabase functions serve",
