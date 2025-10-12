@@ -20,7 +20,7 @@ interface AuthState {
 	logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+export const authStore = create<AuthState>()(
 	persist(
 		(set) => ({
 			user: null,

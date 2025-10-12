@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useAuthStore } from "@/store/authStore";
+import { authStore } from "@/store/authStore";
 
 export function useAuth() {
 	const { user, isAuthenticated, isLoading, setUser, setLoading, logout } =
-		useAuthStore();
+		authStore();
 	const supabase = createClient();
 	const isInitialized = useRef(false);
 

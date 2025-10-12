@@ -15,13 +15,10 @@ api.interceptors.request.use(async (config) => {
 	if (!supabase) {
 		throw new Error("Supabase client not found");
 	}
-	console.log("Supabase client found");
 
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
-
-	console.log("Session:", session);
 
 	if (session?.access_token) {
 		config.headers.Authorization = `Bearer ${session.access_token}`;
