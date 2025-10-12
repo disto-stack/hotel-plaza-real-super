@@ -46,8 +46,6 @@
 		"functions:deploy": "supabase functions deploy",
 		"functions:format": "biome format ./supabase",
 		"functions:format:fix": "biome format ./supabase --write",
-		"functions:test": "deno test --allow-net --allow-env ./supabase/functions",
-		"functions:test:watch": "deno test --allow-net --allow-env ./supabase/functions --watch",
 		"functions:lint": "biome lint ./supabase",
 		"functions:lint:fix": "biome lint ./supabase --write",
 		"functions:check-types": "biome check ./supabase"

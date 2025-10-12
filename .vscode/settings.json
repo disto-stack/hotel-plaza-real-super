@@ -1,6 +1,7 @@
 {
     "deno.enable": true,
     "deno.disablePaths": ["apps/", "node_modules/", "dist/", ".next/", ".astro/"],
+    "deno.importMap": "./supabase/functions/deno.json",
 
     
     "editor.defaultFormatter": "biomejs.biome",
