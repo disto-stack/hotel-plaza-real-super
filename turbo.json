@@ -25,6 +25,18 @@
 		"check-types": {
 			"dependsOn": ["^check-types"]
 		},
+		"test": {
+			"dependsOn": ["^test"]
+		},
+		"test:watch": {
+			"dependsOn": ["^test:watch"]
+		},
+		"test:ui": {
+			"dependsOn": ["^test:ui"]
+		},
+		"test:coverage": {
+			"dependsOn": ["^test:coverage"]
+		},
 		"clean": {
 			"cache": false
 		}
