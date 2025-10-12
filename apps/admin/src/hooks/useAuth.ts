@@ -29,12 +29,10 @@ export function useAuth() {
 		setLoading(true);
 
 		const checkSession = async () => {
-			const {
-				data: { session },
-			} = await supabase.auth.getSession();
+			const getSession = await supabase.auth.getSession();
 
-			if (session?.user) {
-				const userData = await fetchUserData(session.user.id);
+			if (getSession?.data?.session?.user) {
+				const userData = await fetchUserData(getSession.data.session.user.id);
 				setUser(userData);
 			} else {
 				setUser(null);

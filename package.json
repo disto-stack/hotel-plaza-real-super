@@ -11,12 +11,11 @@
 		"format": "pnpm run apps:format & pnpm run functions:format",
 		"format:fix": "pnpm run apps:format:fix & pnpm run functions:format:fix",
 		"check-types": "pnpm run apps:check-types & pnpm run functions:check-types",
-		"test": "pnpm run apps:test & pnpm run functions:test",
-		"test:watch": "pnpm run apps:test:watch & pnpm run functions:test:watch",
 		"stop": "concurrently \"pnpm run supabase:stop\" \"pkill -f turbo\" \"pkill -f next\" \"pkill -f astro\"",
 
 		"apps:dev": "turbo run dev",
 		"apps:lint": "turbo run lint",
+		"apps:build": "turbo run build",
 		"apps:lint:fix": "turbo run lint:fix",
 		"apps:format": "turbo run format",
 		"apps:format:fix": "turbo run format:fix",
