@@ -1,0 +1,12 @@
+{
+	"imports": {
+		"@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2",
+		"_shared/": "./_shared/",
+		"@std/assert": "jsr:@std/assert@^1.0.15"
+	},
+	"compilerOptions": {
+		"allowJs": true,
+		"lib": ["deno.window"],
+		"strict": true
+	}
+}
