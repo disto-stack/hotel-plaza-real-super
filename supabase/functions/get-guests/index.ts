@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { AuthGuard } from "_shared/lib/guards/auth.guard.ts";
 import { HTTP_METHODS, ResponseBuilder } from "_shared/lib/response.ts";
+import { guestsToApiArray } from "_shared/mappers/guest.mapper.ts";
 
 const authGuard = new AuthGuard();
 
@@ -58,7 +59,11 @@ Deno.serve(async (req) => {
 			);
 		}
 
-		return ResponseBuilder.success(guests, "Guests fetched successfully");
+		const camelCaseGuests = guestsToApiArray(guests);
+		return ResponseBuilder.success(
+			camelCaseGuests,
+			"Guests fetched successfully",
+		);
 	} catch (error) {
 		console.error("Error in get-guests function:", error);
 		return ResponseBuilder.error("Internal server error");

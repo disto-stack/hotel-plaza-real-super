@@ -1,6 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import { AuthGuard } from "_shared/lib/guards/auth.guard.ts";
 import { HTTP_METHODS, ResponseBuilder } from "_shared/lib/response.ts";
+import { authToApi, userToAuthMetadata } from "_shared/mappers/user.mapper.ts";
+import type { CreateUserRequest } from "_shared/types/user.type.ts";
 import { validateAndExtract } from "_shared/utils/validation.helper.ts";
 import { UserValidator } from "_shared/validators/user.validator.ts";
 
@@ -37,7 +39,7 @@ Deno.serve(async (req) => {
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 		);
 
-		const { data: userData, error: userError } = await supabaseAdmin
+		const { data: userRoleData, error: userError } = await supabaseAdmin
 			.from("users")
 			.select("role")
 			.eq("id", user.id)
@@ -47,7 +49,7 @@ Deno.serve(async (req) => {
 			return ResponseBuilder.internalServerError("Error verifying permissions");
 		}
 
-		if (userData?.role !== "admin") {
+		if (userRoleData?.role !== "admin") {
 			return ResponseBuilder.forbidden("Only admins can create users");
 		}
 
@@ -65,25 +67,16 @@ Deno.serve(async (req) => {
 			return ResponseBuilder.validationError(validation.errors);
 		}
 
-		const { email, password, firstName, lastName, role } =
-			validation.extractedData as {
-				email: string;
-				password: string;
-				firstName: string;
-				lastName: string;
-				role: string;
-			};
+		const userData = validation.extractedData as CreateUserRequest;
+
+		const authMetadata = userToAuthMetadata(userData);
 
 		const { data: authData, error: createError } =
 			await supabaseAdmin.auth.admin.createUser({
-				email,
-				password,
+				email: userData.email,
+				password: userData.password,
 				email_confirm: true,
-				user_metadata: {
-					first_name: firstName,
-					last_name: lastName,
-					role: role,
-				},
+				user_metadata: authMetadata,
 			});
 
 		if (createError) {
@@ -92,7 +85,9 @@ Deno.serve(async (req) => {
 			);
 		}
 
-		return ResponseBuilder.created(authData, "User created successfully");
+		const responseData = authToApi(authData);
+
+		return ResponseBuilder.created(responseData, "User created successfully");
 	} catch (error) {
 		console.error("Error in create-user function:", error);
 		return ResponseBuilder.error("Internal server error");
