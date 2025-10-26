@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { AuthGuard } from "_shared/lib/guards/auth.guard.ts";
 import { HTTP_METHODS, ResponseBuilder } from "_shared/lib/response.ts";
 import type { CreateGuestRequest } from "_shared/types/guest.type.ts";
+import { convertKeysToSnakeCase } from "_shared/utils/case-converter.ts";
 import { validateAndExtract } from "_shared/utils/validation.helper.ts";
 import { GuestValidator } from "_shared/validators/guest.validator.ts";
 
@@ -50,6 +51,9 @@ Deno.serve(async (req) => {
 
 		const guestData = validation.extractedData;
 
+		// Convert camelCase keys to snake_case for database insertion
+		const guestDataSnakeCase = convertKeysToSnakeCase(guestData);
+
 		const supabaseAdmin = createClient(
 			Deno.env.get("SUPABASE_URL") ?? "",
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -57,7 +61,7 @@ Deno.serve(async (req) => {
 
 		const { data, error } = await supabaseAdmin
 			.from("guests")
-			.insert(guestData)
+			.insert(guestDataSnakeCase)
 			.select()
 			.single();
 
