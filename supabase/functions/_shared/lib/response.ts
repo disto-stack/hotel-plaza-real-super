@@ -1,4 +1,7 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
+// deno-lint-ignore-file no-explicit-any
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: <we need to ignore this because we are using static methods> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <we need to ignore this because we are using any> */
+
 import { corsHeaders } from "./cors.ts";
 
 export const HTTP_STATUS_CODES = {
@@ -223,6 +226,13 @@ export class ResponseBuilder {
 			status: HTTP_STATUS_CODES.OK,
 			headers: corsHeaders,
 		});
+	}
+
+	static created(
+		data: any,
+		message: string = "Created successfully",
+	): Response {
+		return ResponseBuilder.success(data, message, HTTP_STATUS_CODES.CREATED);
 	}
 }
 

@@ -1,13 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
-import { AuthGuard } from "../_shared/lib/guards/auth.guard.ts";
+import { AuthGuard } from "_shared/lib/guards/auth.guard.ts";
 import {
 	createValidationError,
 	HTTP_METHODS,
 	HTTP_STATUS_CODES,
 	ResponseBuilder,
-} from "../_shared/lib/response.ts";
+} from "_shared/lib/response.ts";
+import { validateAndExtract } from "_shared/utils/validation.helper.ts";
+import { UserValidator } from "_shared/validators/user.validator.ts";
 
 const authGuard = new AuthGuard();
+const userValidator = new UserValidator();
 
 Deno.serve(async (req) => {
 	if (req.method === "OPTIONS") {
@@ -30,6 +33,10 @@ Deno.serve(async (req) => {
 
 		const { user } = authResponse;
 
+		if (!user) {
+			return ResponseBuilder.unauthorized("Unauthorized");
+		}
+
 		const supabaseAdmin = createClient(
 			Deno.env.get("SUPABASE_URL") ?? "",
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -49,40 +56,28 @@ Deno.serve(async (req) => {
 			return ResponseBuilder.forbidden("Only admins can create users");
 		}
 
-		const { email, password, firstName, lastName, role } = await req.json();
+		const requestData = await req.json();
 
-		const validationErrors = [];
+		const validation = validateAndExtract(requestData, userValidator, [
+			"email",
+			"password",
+			"firstName",
+			"lastName",
+			"role",
+		]);
 
-		if (!email)
-			validationErrors.push(
-				createValidationError("email", "Email is required"),
-			);
-		if (!password)
-			validationErrors.push(
-				createValidationError("password", "Password is required"),
-			);
-		if (!firstName)
-			validationErrors.push(
-				createValidationError("firstName", "First name is required"),
-			);
-		if (!lastName)
-			validationErrors.push(
-				createValidationError("lastName", "Last name is required"),
-			);
-		if (!role)
-			validationErrors.push(createValidationError("role", "Role is required"));
-
-		if (password.length < 6)
-			validationErrors.push(
-				createValidationError(
-					"password",
-					"Password must be at least 6 characters",
-				),
-			);
-
-		if (validationErrors.length > 0) {
-			return ResponseBuilder.validationError(validationErrors);
+		if (!validation.isValid) {
+			return ResponseBuilder.validationError(validation.errors);
 		}
+
+		const { email, password, firstName, lastName, role } =
+			validation.extractedData as {
+				email: string;
+				password: string;
+				firstName: string;
+				lastName: string;
+				role: string;
+			};
 
 		const { data: authData, error: createError } =
 			await supabaseAdmin.auth.admin.createUser({
@@ -102,19 +97,7 @@ Deno.serve(async (req) => {
 			);
 		}
 
-		return ResponseBuilder.success(
-			{
-				user: {
-					id: authData.user?.id,
-					email: authData.user?.email,
-					first_name: firstName,
-					last_name: lastName,
-					role: role,
-				},
-			},
-			"User created successfully",
-			HTTP_STATUS_CODES.CREATED,
-		);
+		return ResponseBuilder.created(authData, "User created successfully");
 	} catch (error) {
 		console.error("Error in create-user function:", error);
 		return ResponseBuilder.error("Internal server error");

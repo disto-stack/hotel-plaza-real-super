@@ -12,7 +12,6 @@
 		"format:fix": "pnpm run apps:format:fix & pnpm run functions:format:fix",
 		"check-types": "pnpm run apps:check-types & pnpm run functions:check-types",
 		"stop": "concurrently \"pnpm run supabase:stop\" \"pkill -f turbo\" \"pkill -f next\" \"pkill -f astro\"",
-
 		"apps:dev": "turbo run dev",
 		"apps:lint": "turbo run lint",
 		"apps:build": "turbo run build",
@@ -25,21 +24,17 @@
 		"apps:test:watch": "turbo run test:watch",
 		"apps:test:ui": "turbo run test:ui",
 		"apps:test:coverage": "turbo run test:coverage",
-
 		"supabase:start": "supabase start",
 		"supabase:stop": "supabase stop",
 		"supabase:status": "supabase status",
-
 		"migration:new": "supabase migration new",
 		"migration:up": "supabase migration up",
 		"migration:down": "supabase migration down",
 		"migration:list": "supabase migration list",
-
 		"db:reset:local": "supabase db reset",
 		"db:push:local": "supabase db up --local",
 		"db:push:remote": "supabase db push",
 		"db:seed": "supabase db seed",
-
 		"functions:new": "supabase functions new",
 		"functions:serve": "supabase functions serve",
 		"functions:deploy": "supabase functions deploy",
