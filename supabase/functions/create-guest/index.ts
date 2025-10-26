@@ -43,6 +43,8 @@ Deno.serve(async (req) => {
 			"firstName",
 			"lastName",
 			"documentType",
+			"email",
+			"phone",
 			"documentNumber",
 			"occupation",
 			"nationality",
@@ -68,6 +70,20 @@ Deno.serve(async (req) => {
 			.single();
 
 		if (error) {
+			if (
+				error.code === "23505" &&
+				error.message.includes("guests_email_key")
+			) {
+				return ResponseBuilder.badRequest("Email already exists");
+			}
+
+			if (
+				error.code === "23505" &&
+				error.message.includes("uk_guests_document")
+			) {
+				return ResponseBuilder.badRequest("Document number already exists");
+			}
+
 			return ResponseBuilder.internalServerError(
 				`Error creating guest: ${error.message}`,
 			);
