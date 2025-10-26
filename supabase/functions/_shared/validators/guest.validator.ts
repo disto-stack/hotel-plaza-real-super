@@ -39,24 +39,10 @@ export const guestValidationConfig: FieldConfig = {
 		maxLength: 50,
 		pattern: /^[a-zA-Z0-9-]+$/,
 	},
-	dateOfBirth: {
+	occupation: {
 		required: true,
-		type: "date",
-		custom: (value: string) => {
-			const birthDate = new Date(value);
-			const today = new Date();
-			const age = today.getFullYear() - birthDate.getFullYear();
-
-			if (age < 0) {
-				return "Date of birth cannot be in the future";
-			}
-
-			if (age > 120) {
-				return "Date of birth seems invalid";
-			}
-
-			return null;
-		},
+		type: "string",
+		maxLength: 100,
 	},
 	nationality: {
 		type: "string",

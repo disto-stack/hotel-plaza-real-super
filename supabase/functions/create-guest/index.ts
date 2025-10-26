@@ -40,7 +40,7 @@ Deno.serve(async (req) => {
 			"lastName",
 			"documentType",
 			"documentNumber",
-			"dateOfBirth",
+			"occupation",
 			"nationality",
 		]);
 
@@ -62,7 +62,9 @@ Deno.serve(async (req) => {
 			.single();
 
 		if (error) {
-			return ResponseBuilder.internalServerError("Error creating guest");
+			return ResponseBuilder.internalServerError(
+				`Error creating guest: ${error.message}`,
+			);
 		}
 
 		return ResponseBuilder.created(data, "Guest created successfully");

@@ -11,6 +11,6 @@ export interface CreateGuestRequest {
 	phone?: string;
 	documentType?: DocumentType;
 	documentNumber: string;
-	dateOfBirth?: string;
+	occupation: string;
 	nationality?: string;
 }
