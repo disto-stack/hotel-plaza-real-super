@@ -1,11 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { AuthGuard } from "_shared/lib/guards/auth.guard.ts";
-import {
-	createValidationError,
-	HTTP_METHODS,
-	HTTP_STATUS_CODES,
-	ResponseBuilder,
-} from "_shared/lib/response.ts";
+import { HTTP_METHODS, ResponseBuilder } from "_shared/lib/response.ts";
 import { validateAndExtract } from "_shared/utils/validation.helper.ts";
 import { UserValidator } from "_shared/validators/user.validator.ts";
 
