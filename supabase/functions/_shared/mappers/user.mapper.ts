@@ -5,18 +5,6 @@ import type {
 	UserRole,
 } from "../types/user.type.ts";
 
-export interface User {
-	id: string;
-	email: string;
-	firstName: string;
-	lastName: string;
-	role: UserRole;
-	isActive: boolean;
-	lastLoginAt?: string;
-	createdAt: string;
-	updatedAt: string;
-}
-
 export function userToDatabase(
 	userData: CreateUserRequest | UpdateUserRequest,
 ): Record<string, unknown> {
@@ -105,7 +93,7 @@ export function authToApi(authData: Record<string, unknown>): UserResponse {
 					unknown
 				>
 			)?.role as UserRole) || (authData.role as UserRole),
-		isActive: true, // Los usuarios recién creados están activos por defecto
+		isActive: true,
 		lastLoginAt: (authData.user as Record<string, unknown>)?.last_sign_in_at as
 			| string
 			| undefined,
