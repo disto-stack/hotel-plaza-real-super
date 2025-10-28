@@ -15,13 +15,11 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import type { Guest } from "@/lib/api/guests";
+import { columns } from "./columns";
 
 interface GuestsTableProps {
 	guests: Guest[];
 }
-
-import { columns } from "./columns";
-
 export default function GuestsTable({ guests }: GuestsTableProps) {
 	const table = useReactTable({
 		data: guests,
