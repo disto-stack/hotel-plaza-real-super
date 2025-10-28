@@ -18,6 +18,7 @@ const mockSupabase = {
 		getSession: vi.fn(),
 		onAuthStateChange: vi.fn(),
 		signOut: vi.fn(),
+		signInWithPassword: vi.fn(),
 	},
 	from: mockFrom,
 };
@@ -158,7 +159,7 @@ describe("useAuth", () => {
 		});
 	});
 
-	it("debería manejar evento SIGNED_OUT", async () => {
+	it("should handle SIGNED_OUT event", async () => {
 		let authStateChangeCallback: any;
 
 		mockSupabase.auth.onAuthStateChange.mockImplementation((callback: any) => {
@@ -213,6 +214,50 @@ describe("useAuth", () => {
 		await waitFor(() => {
 			expect(mockUseAuthStore.setUser).toHaveBeenCalledTimes(1);
 		});
+	});
+
+	it("should sign in correctly", async () => {
+		mockSupabase.auth.onAuthStateChange.mockReturnValue({
+			data: { subscription: { unsubscribe: vi.fn() } },
+		});
+
+		mockSupabase.auth.signInWithPassword.mockResolvedValue({ error: null });
+
+		const { result } = renderHook(() => useAuth());
+
+		await result.current.signIn("test@example.com", "password");
+
+		expect(mockSupabase.auth.signInWithPassword).toHaveBeenCalledWith({
+			email: "test@example.com",
+			password: "password",
+		});
+
+		expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(null);
+	});
+
+	it("should handle error in sign in", async () => {
+		mockSupabase.auth.getSession.mockResolvedValue({
+			data: { session: null },
+		});
+
+		mockSupabase.auth.onAuthStateChange.mockReturnValue({
+			data: { subscription: { unsubscribe: vi.fn() } },
+		});
+
+		mockSupabase.auth.signInWithPassword.mockResolvedValue({
+			error: { message: "Logout failed" },
+		});
+
+		const { result } = renderHook(() => useAuth());
+
+		await result.current.signIn("test@example.com", "password");
+
+		expect(mockSupabase.auth.signInWithPassword).toHaveBeenCalledWith({
+			email: "test@example.com",
+			password: "password",
+		});
+
+		expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(null);
 	});
 
 	it("should logout correctly", async () => {
