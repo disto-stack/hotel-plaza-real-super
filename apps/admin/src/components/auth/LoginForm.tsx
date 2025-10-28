@@ -24,6 +24,8 @@ export default function LoginForm() {
 			router.push("/guests");
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
