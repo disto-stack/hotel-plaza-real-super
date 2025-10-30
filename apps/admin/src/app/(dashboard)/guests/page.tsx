@@ -1,12 +1,15 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useState } from "react";
+import GuestCreateModal from "@/components/dashboard/guests/GuestCreateModal";
 import GuestsTable from "@/components/dashboard/guests/GuestTable";
 import { Button } from "@/components/ui/button";
 import { useGuests } from "@/hooks/useGuests";
 
 export default function GuestsPage() {
 	const { data: guests, isLoading, error } = useGuests();
+	const [openCreate, setOpenCreate] = useState(false);
 
 	return (
 		<main className="flex-1 p-4">
@@ -19,7 +22,10 @@ export default function GuestsPage() {
 
 			<section>
 				<div className="flex justify-end py-2">
-					<Button className="btn btn-primary rounded-xl">
+					<Button
+						className="btn btn-primary rounded-xl"
+						onClick={() => setOpenCreate(true)}
+					>
 						<Plus className="w-4 h-4" />
 						Agregar huésped
 					</Button>
@@ -37,6 +43,10 @@ export default function GuestsPage() {
 				)}
 				{guests && <GuestsTable guests={guests} />}
 			</section>
+			<GuestCreateModal
+				open={openCreate}
+				onClose={() => setOpenCreate(false)}
+			/>
 		</main>
 	);
 }
