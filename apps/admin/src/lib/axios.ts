@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const api = axios.create({
 	baseURL: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1`,
-	timeout: 1000,
+	timeout: 10000,
 	headers: {
 		"Content-Type": "application/json",
 	},
