@@ -3,11 +3,23 @@ import type { Guest } from "@/lib/api/guests";
 
 export const columns: ColumnDef<Guest>[] = [
 	{
-		header: "Nombre",
-		accessorKey: "first_name",
+		header: "Nombres",
+		accessorKey: "firstName",
 	},
 	{
-		header: "Apellido",
-		accessorKey: "last_name",
+		header: "Apellidos",
+		accessorKey: "lastName",
+	},
+	{
+		header: "Ocupación",
+		accessorKey: "occupation",
+	},
+	{
+		header: "Teléfono",
+		accessorKey: "phone",
+	},
+	{
+		header: "Número de documento",
+		accessorKey: "documentNumber",
 	},
 ];

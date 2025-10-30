@@ -1,6 +1,8 @@
 "use client";
 
+import { Plus } from "lucide-react";
 import GuestsTable from "@/components/dashboard/guests/GuestTable";
+import { Button } from "@/components/ui/button";
 import { useGuests } from "@/hooks/useGuests";
 
 export default function GuestsPage() {
@@ -8,15 +10,33 @@ export default function GuestsPage() {
 
 	return (
 		<main className="flex-1 p-4">
-			<h1 className="text-2xl font-bold">Huéspedes</h1>
+			<header>
+				<h1 className="text-3xl font-semibold font-heading">Huéspedes</h1>
+				<p className="text-sm text-muted-foreground font-sans pt-2">
+					Aquí puedes ver todos los huéspedes registrados en el sistema.
+				</p>
+			</header>
 
-			{isLoading && <div>Cargando...</div>}
-			{error && (
-				<div>
-					No se pudieron cargar los huéspedes. Por favor, intente nuevamente.
+			<section>
+				<div className="flex justify-end py-2">
+					<Button className="btn btn-primary rounded-xl">
+						<Plus className="w-4 h-4" />
+						Agregar huésped
+					</Button>
 				</div>
-			)}
-			{guests && <GuestsTable guests={guests} />}
+
+				{isLoading && (
+					<div className="text-sm text-muted-foreground font-sans">
+						Cargando...
+					</div>
+				)}
+				{error && (
+					<div className="text-sm text-destructive font-sans">
+						No se pudieron cargar los huéspedes. Por favor, intente nuevamente.
+					</div>
+				)}
+				{guests && <GuestsTable guests={guests} />}
+			</section>
 		</main>
 	);
 }
