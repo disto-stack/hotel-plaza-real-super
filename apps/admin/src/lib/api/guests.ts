@@ -21,8 +21,8 @@ export interface CreateGuestData {
 	phone?: string;
 	documentType: string;
 	documentNumber: string;
-	nationality: string;
-	occupation?: string;
+	nationality?: string;
+	occupation: string;
 }
 
 export const guestsApi = {

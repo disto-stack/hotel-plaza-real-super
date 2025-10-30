@@ -3,8 +3,7 @@ import { createClient } from "@/lib/supabase/client";
 import { authStore } from "@/store/authStore";
 
 export function useAuth() {
-	const { user, isAuthenticated, isLoading, setUser, setLoading, logout } =
-		authStore();
+	const { setLoading, setUser, logout } = authStore();
 	const supabase = createClient();
 	const isInitialized = useRef(false);
 
@@ -56,6 +55,8 @@ export function useAuth() {
 			} else if (event === "SIGNED_OUT") {
 				setUser(null);
 			}
+
+			setLoading(false);
 		});
 
 		return () => subscription.unsubscribe();
@@ -63,6 +64,8 @@ export function useAuth() {
 
 	const signOut = async () => {
 		if (!supabase) return;
+		setLoading(true);
+
 		const { error } = await supabase.auth.signOut({
 			scope: "local",
 		});
@@ -73,6 +76,8 @@ export function useAuth() {
 
 		logout();
 
+		setLoading(false);
+
 		if (typeof window !== "undefined") {
 			window.location.href = "/login";
 		}
@@ -80,6 +85,7 @@ export function useAuth() {
 
 	const signIn = async (email: string, password: string) => {
 		if (!supabase) return;
+		setLoading(true);
 
 		const { error } = await supabase.auth.signInWithPassword({
 			email,
@@ -89,12 +95,11 @@ export function useAuth() {
 		if (error) {
 			return;
 		}
+
+		setLoading(false);
 	};
 
 	return {
-		user,
-		isAuthenticated,
-		isLoading,
 		signOut,
 		signIn,
 	};
