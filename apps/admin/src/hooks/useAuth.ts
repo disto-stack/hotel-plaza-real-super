@@ -2,6 +2,14 @@ import { useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { authStore } from "@/store/authStore";
 
+const AUTH_ERROR_MESSAGES = {
+	invalid_credentials: "Correo electrónico o contraseña incorrectos",
+	email_not_confirmed: "Correo electrónico no confirmado",
+	too_many_requests: "Demasiados intentos. Por favor, espera un momento.",
+	unauthorized: "No tienes permisos para acceder a esta página",
+	unknown_error: "Ocurrió un error inesperado",
+};
+
 export function useAuth() {
 	const { setLoading, setUser, logout } = authStore();
 	const supabase = createClient();
@@ -71,7 +79,14 @@ export function useAuth() {
 		});
 
 		if (error) {
-			return;
+			setLoading(false);
+
+			const errorCode = error.code as keyof typeof AUTH_ERROR_MESSAGES;
+
+			const errorMessage =
+				AUTH_ERROR_MESSAGES[errorCode] || AUTH_ERROR_MESSAGES.unknown_error;
+
+			throw new Error(errorMessage);
 		}
 
 		logout();
@@ -93,7 +108,14 @@ export function useAuth() {
 		});
 
 		if (error) {
-			return;
+			setLoading(false);
+
+			const errorCode = error.code as keyof typeof AUTH_ERROR_MESSAGES;
+
+			const errorMessage =
+				AUTH_ERROR_MESSAGES[errorCode] || AUTH_ERROR_MESSAGES.unknown_error;
+
+			throw new Error(errorMessage);
 		}
 
 		setLoading(false);

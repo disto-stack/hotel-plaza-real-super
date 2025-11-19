@@ -1,8 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useCreateGuest } from "@/hooks/useGuests";
+import { extractErrorMessage } from "@/lib/error-handler";
 
 interface GuestCreateModalProps {
 	open: boolean;
@@ -21,7 +23,6 @@ export default function GuestCreateModal({
 	const [documentType, setDocumentType] = useState("National ID");
 	const [documentNumber, setDocumentNumber] = useState("");
 	const [occupation, setOccupation] = useState("");
-	const [error, setError] = useState<string | null>(null);
 
 	const firstNameId = useId();
 	const lastNameId = useId();
@@ -39,7 +40,6 @@ export default function GuestCreateModal({
 		setDocumentType("National ID");
 		setDocumentNumber("");
 		setOccupation("");
-		setError(null);
 	};
 
 	const handleClose = () => {
@@ -50,10 +50,8 @@ export default function GuestCreateModal({
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setError(null);
 
 		if (!firstName || !lastName || !documentType || !documentNumber) {
-			setError("Por favor completa los campos obligatorios");
 			return;
 		}
 
@@ -66,9 +64,13 @@ export default function GuestCreateModal({
 				documentNumber,
 				occupation,
 			});
+
+			toast.success("Huésped creado correctamente");
+
 			handleClose();
-		} catch (err: any) {
-			setError(err?.message ?? "No se pudo crear el huésped");
+		} catch (err) {
+			const errorMessage = extractErrorMessage(err);
+			toast.error(errorMessage);
 		}
 	};
 
@@ -79,12 +81,6 @@ export default function GuestCreateModal({
 			</header>
 
 			<form onSubmit={handleSubmit} className="p-5 space-y-4">
-				{error && (
-					<div className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
-						{error}
-					</div>
-				)}
-
 				<section className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<article className="flex flex-col gap-2">
 						<label htmlFor="firstName" className="text-sm font-medium">

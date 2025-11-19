@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 
 const inter = Inter({
@@ -36,6 +37,8 @@ export default function RootLayout({
 			<body
 				className={`${inter.variable} ${poppins.variable} ${jetBrainsMono.variable} antialiased`}
 			>
+				<Toaster position="top-center" richColors closeButton duration={5000} />
+
 				<QueryProvider>{children}</QueryProvider>
 			</body>
 		</html>
