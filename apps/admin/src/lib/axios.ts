@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosError } from "axios";
 import { createClient } from "@/lib/supabase/client";
 
 const api = axios.create({
@@ -26,5 +26,12 @@ api.interceptors.request.use(async (config) => {
 
 	return config;
 });
+
+api.interceptors.response.use(
+	(response) => response,
+	(error: AxiosError) => {
+		return Promise.reject(error);
+	},
+);
 
 export default api;

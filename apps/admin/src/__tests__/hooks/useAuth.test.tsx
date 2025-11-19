@@ -216,6 +216,10 @@ describe("useAuth", () => {
 	});
 
 	it("should sign in correctly", async () => {
+		mockSupabase.auth.getSession.mockResolvedValue({
+			data: { session: null },
+		});
+
 		mockSupabase.auth.onAuthStateChange.mockReturnValue({
 			data: { subscription: { unsubscribe: vi.fn() } },
 		});
@@ -231,7 +235,8 @@ describe("useAuth", () => {
 			password: "password",
 		});
 
-		expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(null);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
 	});
 
 	it("should handle error in sign in", async () => {
@@ -244,19 +249,71 @@ describe("useAuth", () => {
 		});
 
 		mockSupabase.auth.signInWithPassword.mockResolvedValue({
-			error: { message: "Logout failed" },
+			error: {
+				message: "Invalid login credentials",
+				code: "invalid_credentials",
+			},
 		});
 
 		const { result } = renderHook(() => useAuth());
 
-		await result.current.signIn("test@example.com", "password");
+		await expect(
+			result.current.signIn("test@example.com", "password"),
+		).rejects.toThrow("Correo electrónico o contraseña incorrectos");
 
 		expect(mockSupabase.auth.signInWithPassword).toHaveBeenCalledWith({
 			email: "test@example.com",
 			password: "password",
 		});
 
-		expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(null);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
+	});
+
+	it("should handle different error codes in sign in", async () => {
+		mockSupabase.auth.getSession.mockResolvedValue({
+			data: { session: null },
+		});
+
+		mockSupabase.auth.onAuthStateChange.mockReturnValue({
+			data: { subscription: { unsubscribe: vi.fn() } },
+		});
+
+		mockSupabase.auth.signInWithPassword.mockResolvedValue({
+			error: { message: "Email not confirmed", code: "email_not_confirmed" },
+		});
+
+		const { result } = renderHook(() => useAuth());
+
+		await expect(
+			result.current.signIn("test@example.com", "password"),
+		).rejects.toThrow("Correo electrónico no confirmado");
+
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
+	});
+
+	it("should handle unknown error code in sign in", async () => {
+		mockSupabase.auth.getSession.mockResolvedValue({
+			data: { session: null },
+		});
+
+		mockSupabase.auth.onAuthStateChange.mockReturnValue({
+			data: { subscription: { unsubscribe: vi.fn() } },
+		});
+
+		mockSupabase.auth.signInWithPassword.mockResolvedValue({
+			error: { message: "Unknown error", code: "unknown_code" },
+		});
+
+		const { result } = renderHook(() => useAuth());
+
+		await expect(
+			result.current.signIn("test@example.com", "password"),
+		).rejects.toThrow("Ocurrió un error inesperado");
+
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
 	});
 
 	it("should logout correctly", async () => {
@@ -270,6 +327,10 @@ describe("useAuth", () => {
 
 		mockSupabase.auth.signOut.mockResolvedValue({ error: null });
 
+		const originalLocation = window.location;
+		delete (window as any).location;
+		(window as any).location = { href: "" };
+
 		const { result } = renderHook(() => useAuth());
 
 		await result.current.signOut();
@@ -277,7 +338,13 @@ describe("useAuth", () => {
 		expect(mockSupabase.auth.signOut).toHaveBeenCalledWith({
 			scope: "local",
 		});
+
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
 		expect(mockUseAuthStore.logout).toHaveBeenCalled();
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
+		expect(window.location.href).toBe("/login");
+
+		(window as any).location = originalLocation;
 	});
 
 	it("should handle error in logout", async () => {
@@ -290,17 +357,21 @@ describe("useAuth", () => {
 		});
 
 		mockSupabase.auth.signOut.mockResolvedValue({
-			error: { message: "Logout failed" },
+			error: { message: "Logout failed", code: "unauthorized" },
 		});
 
 		const { result } = renderHook(() => useAuth());
 
-		await result.current.signOut();
+		await expect(result.current.signOut()).rejects.toThrow(
+			"No tienes permisos para acceder a esta página",
+		);
 
 		expect(mockSupabase.auth.signOut).toHaveBeenCalledWith({
 			scope: "local",
 		});
 
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
+		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
 		expect(mockUseAuthStore.logout).not.toHaveBeenCalled();
 	});
 

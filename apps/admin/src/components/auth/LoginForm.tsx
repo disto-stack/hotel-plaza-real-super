@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
+import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { extractErrorMessage } from "@/lib/error-handler";
 
 export default function LoginForm() {
 	const emailId = useId();
@@ -23,7 +25,9 @@ export default function LoginForm() {
 			await signIn(email, password);
 			router.push("/guests");
 		} catch (error) {
-			console.error(error);
+			toast.error(extractErrorMessage(error), {
+				duration: 5000,
+			});
 		} finally {
 			setIsLoading(false);
 		}
