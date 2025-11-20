@@ -1,12 +1,10 @@
 "use client";
 
 import {
-	type ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { log } from "console";
 import {
 	Table,
 	TableBody,
@@ -15,7 +13,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { Guest } from "@/lib/api/guests";
+import type { Guest } from "@/lib/types/guest.types";
 import { columns } from "./columns";
 
 interface GuestsTableProps {

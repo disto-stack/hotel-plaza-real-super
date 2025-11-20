@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Guest } from "@/lib/api/guests";
+import type { Guest } from "@/lib/types/guest.types";
 
 export const columns: ColumnDef<Guest>[] = [
 	{

@@ -165,17 +165,14 @@ export default function GuestCreateModal({
 				<section className="flex justify-end gap-2 pt-2">
 					<Button
 						type="reset"
-						className="btn btn-ghost bg-transparent text-foreground hover:bg-primary/10 hover:text-primary font-sans"
+						variant="ghost"
+						className="font-sans"
 						onClick={handleClose}
 						disabled={isPending}
 					>
 						Cancelar
 					</Button>
-					<Button
-						type="submit"
-						className="btn btn-primary"
-						disabled={isPending}
-					>
+					<Button type="submit" variant="default" disabled={isPending}>
 						{isPending ? "Guardando..." : "Guardar"}
 					</Button>
 				</section>

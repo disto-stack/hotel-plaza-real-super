@@ -22,10 +22,7 @@ export default function GuestsPage() {
 
 			<section>
 				<div className="flex justify-end py-2">
-					<Button
-						className="btn btn-primary rounded-xl"
-						onClick={() => setOpenCreate(true)}
-					>
+					<Button variant="default" onClick={() => setOpenCreate(true)}>
 						<Plus className="w-4 h-4" />
 						Agregar huésped
 					</Button>
