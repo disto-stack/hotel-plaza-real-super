@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 const menuItems = [{ icon: Users, label: "Huéspedes", href: "/guests" }];
 
@@ -41,10 +40,8 @@ export default function Sidebar() {
 						<Link key={item.href} href={item.href}>
 							<Button
 								type="button"
-								className={cn(
-									"btn rounded-2xl w-full text-sm flex items-center justify-start gap-3 font-sans",
-									isActive ? "btn-primary" : "btn-ghost",
-								)}
+								variant={isActive ? "default" : "ghost"}
+								className="rounded-2xl w-full text-sm flex items-center justify-start gap-3 font-sans"
 							>
 								<item.icon className="w-4 h-4" />
 								{item.label}

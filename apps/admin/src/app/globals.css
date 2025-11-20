@@ -3,34 +3,44 @@
 
 :root {
 	--primary: #d7b764;
+	--primary-foreground: #ffffff;
 	--secondary: #78d261;
+	--secondary-foreground: #1a1a1a;
 	--accent: #b88b5c;
+	--accent-foreground: #ffffff;
 
 	--background: #f8f9fa;
 	--card: #ffffff;
 	--muted: #f1f3f5;
+	--input: #ffffff;
 
 	--foreground: #1a1a1a;
 	--muted-foreground: #6b7280;
 
 	--destructive: #ef4444;
 	--border: #e5e7eb;
+	--ring: #d7b764;
 }
 
 @theme inline {
 	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
 	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
 	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
 
 	--color-background: var(--background);
 	--color-card: var(--card);
 	--color-muted: var(--muted);
+	--color-input: var(--input);
 
 	--color-foreground: var(--foreground);
 	--color-muted-foreground: var(--muted-foreground);
 
 	--color-destructive: var(--destructive);
 	--color-border: var(--border);
+	--color-ring: var(--ring);
 
 	--font-sans: var(--font-inter);
 	--font-mono: var(--font-jetbrains-mono);
@@ -45,18 +55,8 @@ body {
 
 @layer components {
 	.form-input {
-		@apply p-2 font-sans text-sm bg-background border-border border-2 rounded-xl focus:outline-none focus:ring-3 focus:ring-primary;
-	}
-
-	.btn {
-		@apply p-2 rounded-xl cursor-pointer transition-colors duration-200 font-medium;
-	}
-
-	.btn-primary {
-		@apply bg-primary text-white hover:bg-primary/90;
-	}
-
-	.btn-ghost {
-		@apply bg-transparent text-foreground hover:bg-primary/10 hover:text-primary;
+		@apply p-2 font-sans text-sm bg-background border-border border-2 rounded-xl 
+		       focus:outline-none focus:ring-3 focus:ring-primary
+		       aria-invalid:ring-destructive/20 aria-invalid:border-destructive aria-invalid:text-destructive;
 	}
 }
