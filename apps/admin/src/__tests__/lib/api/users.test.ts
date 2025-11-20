@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
-import { type CreateUserData, usersApi } from "@/lib/api/users";
+import { usersApi } from "@/lib/api/users";
 import api from "@/lib/axios";
+import type { CreateUserData } from "@/lib/types/user.types";
 
 vi.mock("@/lib/axios", () => ({
 	default: {
