@@ -1,10 +1,19 @@
 "use client";
 
-import { useId, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useId } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { useCreateGuest } from "@/hooks/useGuests";
 import { extractErrorMessage } from "@/lib/error-handler";
+import {
+	type GuestCreateFormData,
+	guestCreateSchema,
+} from "@/lib/validations/guest.schema";
 
 interface GuestCreateModalProps {
 	open: boolean;
@@ -17,13 +26,6 @@ export default function GuestCreateModal({
 }: GuestCreateModalProps) {
 	const { mutateAsync, isPending } = useCreateGuest();
 
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [phone, setPhone] = useState("");
-	const [documentType, setDocumentType] = useState("National ID");
-	const [documentNumber, setDocumentNumber] = useState("");
-	const [occupation, setOccupation] = useState("");
-
 	const firstNameId = useId();
 	const lastNameId = useId();
 	const phoneId = useId();
@@ -31,25 +33,34 @@ export default function GuestCreateModal({
 	const documentNumberId = useId();
 	const occupationId = useId();
 
-	if (!open) return null;
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isValid },
+		reset,
+	} = useForm<GuestCreateFormData>({
+		resolver: zodResolver(guestCreateSchema),
+		mode: "onBlur",
+	});
 
-	const reset = () => {
-		setFirstName("");
-		setLastName("");
-		setPhone("");
-		setDocumentType("National ID");
-		setDocumentNumber("");
-		setOccupation("");
-	};
+	if (!open) return null;
 
 	const handleClose = () => {
 		if (isPending) return;
+
 		reset();
 		onClose();
 	};
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const onSubmit = async (data: GuestCreateFormData) => {
+		const {
+			firstName,
+			lastName,
+			phone,
+			documentType,
+			documentNumber,
+			occupation,
+		} = data;
 
 		if (!firstName || !lastName || !documentType || !documentNumber) {
 			return;
@@ -75,108 +86,133 @@ export default function GuestCreateModal({
 	};
 
 	return (
-		<main className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/50 backdrop-blur-sm rounded-xl border border-border">
-			<header className="flex items-center justify-between px-5 py-4 border-b border-border">
-				<h2 className="text-lg font-semibold font-heading">Nuevo huésped</h2>
-			</header>
+		<main
+			className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/50 backdrop-blur-sm"
+			data-testid="guest-create-modal"
+		>
+			<div className="bg-card rounded-2xl shadow-md p-5">
+				<header className="flex items-center justify-between px-5 py-4">
+					<h2 className="text-lg font-semibold font-heading text-center">
+						Nuevo huésped
+					</h2>
+				</header>
 
-			<form onSubmit={handleSubmit} className="p-5 space-y-4">
-				<section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<article className="flex flex-col gap-2">
-						<label htmlFor="firstName" className="text-sm font-medium">
-							Nombre
-						</label>
-						<input
-							className="form-input"
-							value={firstName}
-							id={firstNameId}
-							onChange={(e) => setFirstName(e.target.value)}
-							placeholder="Juan"
-						/>
-					</article>
-					<article className="flex flex-col gap-2">
-						<label htmlFor={lastNameId} className="text-sm font-medium">
-							Apellido
-						</label>
-						<input
-							className="form-input"
-							value={lastName}
-							id={lastNameId}
-							onChange={(e) => setLastName(e.target.value)}
-							placeholder="Pérez"
-						/>
-					</article>
-
-					<article className="flex flex-col gap-2">
-						<label htmlFor={phoneId} className="text-sm font-medium">
-							Teléfono
-						</label>
-						<input
-							className="form-input"
-							value={phone}
-							id={phoneId}
-							onChange={(e) => setPhone(e.target.value)}
-							placeholder="999999999"
-						/>
-					</article>
-
-					<article className="flex flex-col gap-2">
-						<label htmlFor={documentTypeId} className="text-sm font-medium">
-							Tipo de documento
-						</label>
-						<select
-							className="form-input"
-							value={documentType}
-							id={documentTypeId}
-							onChange={(e) => setDocumentType(e.target.value)}
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className="p-5 space-y-4"
+					data-testid="guest-create-form"
+				>
+					<section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<FormField
+							label="Nombre"
+							htmlFor={firstNameId}
+							required
+							error={errors.firstName?.message}
 						>
-							<option value="Passport">Pasaporte</option>
-							<option value="National ID">Cédula de ciudadanía</option>
-							<option value="Identity Card">Tarjeta de identidad</option>
-						</select>
-					</article>
-					<article className="flex flex-col gap-2">
-						<label htmlFor={documentNumberId} className="text-sm font-medium">
-							Número de documento
-						</label>
-						<input
-							className="form-input"
-							value={documentNumber}
-							id={documentNumberId}
-							onChange={(e) => setDocumentNumber(e.target.value)}
-							placeholder="00000000"
-						/>
-					</article>
+							<Input
+								id={firstNameId}
+								{...register("firstName")}
+								placeholder="Juan Manuel"
+								data-testid="first-name-input"
+							/>
+						</FormField>
 
-					<article className="flex flex-col gap-2">
-						<label htmlFor={occupationId} className="text-sm font-medium">
-							Ocupación
-						</label>
-						<input
-							className="form-input"
-							value={occupation}
-							id={occupationId}
-							onChange={(e) => setOccupation(e.target.value)}
-							placeholder="Estudiante"
-						/>
-					</article>
-				</section>
+						<FormField
+							label="Apellido"
+							htmlFor={lastNameId}
+							required
+							error={errors.lastName?.message}
+						>
+							<Input
+								id={lastNameId}
+								{...register("lastName")}
+								placeholder="Pérez"
+								data-testid="last-name-input"
+							/>
+						</FormField>
 
-				<section className="flex justify-end gap-2 pt-2">
-					<Button
-						type="reset"
-						variant="ghost"
-						className="font-sans"
-						onClick={handleClose}
-						disabled={isPending}
-					>
-						Cancelar
-					</Button>
-					<Button type="submit" variant="default" disabled={isPending}>
-						{isPending ? "Guardando..." : "Guardar"}
-					</Button>
-				</section>
-			</form>
+						<FormField
+							label="Teléfono"
+							htmlFor={phoneId}
+							required
+							error={errors.phone?.message}
+						>
+							<Input
+								id={phoneId}
+								{...register("phone")}
+								placeholder="3104951906"
+								data-testid="phone-input"
+							/>
+						</FormField>
+
+						<FormField
+							label="Tipo de documento"
+							htmlFor={documentTypeId}
+							required
+							error={errors.documentType?.message}
+						>
+							<Select
+								id={documentTypeId}
+								{...register("documentType")}
+								data-testid="document-type-input"
+							>
+								<option value="National ID">Cédula de ciudadanía</option>
+								<option value="Identity Card">Tarjeta de identidad</option>
+								<option value="Passport">Pasaporte</option>
+							</Select>
+						</FormField>
+
+						<FormField
+							label="Número de documento"
+							htmlFor={documentNumberId}
+							required
+							error={errors.documentNumber?.message}
+						>
+							<Input
+								id={documentNumberId}
+								{...register("documentNumber")}
+								placeholder="00000000"
+								data-testid="document-number-input"
+							/>
+						</FormField>
+
+						<FormField
+							label="Ocupación"
+							htmlFor={occupationId}
+							required
+							error={errors.occupation?.message}
+						>
+							<Input
+								id={occupationId}
+								{...register("occupation")}
+								placeholder="Estudiante"
+								data-testid="occupation-input"
+							/>
+						</FormField>
+					</section>
+
+					<section className="flex justify-end gap-2 pt-2">
+						<Button
+							type="reset"
+							variant="ghost"
+							className="font-sans"
+							onClick={handleClose}
+							disabled={isPending}
+							data-testid="cancel-button"
+						>
+							Cancelar
+						</Button>
+						<Button
+							type="submit"
+							variant="default"
+							disabled={isPending || !isValid}
+							data-testid="submit-button"
+						>
+							{isPending ? "Guardando..." : "Guardar"}
+						</Button>
+					</section>
+				</form>
+			</div>
 		</main>
 	);
 }

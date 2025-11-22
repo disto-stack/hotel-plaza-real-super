@@ -5,6 +5,7 @@ import { useState } from "react";
 import GuestCreateModal from "@/components/dashboard/guests/GuestCreateModal";
 import GuestsTable from "@/components/dashboard/guests/GuestTable";
 import { Button } from "@/components/ui/button";
+import { SearchBar } from "@/components/ui/SearchBar";
 import { useGuests } from "@/hooks/useGuests";
 
 export default function GuestsPage() {
@@ -12,7 +13,7 @@ export default function GuestsPage() {
 	const [openCreate, setOpenCreate] = useState(false);
 
 	return (
-		<main className="flex-1 p-4">
+		<main className="flex-1 p-4" data-testid="guests-page">
 			<header>
 				<h1 className="text-3xl font-semibold font-heading">Huéspedes</h1>
 				<p className="text-sm text-muted-foreground font-sans pt-2">
@@ -21,8 +22,17 @@ export default function GuestsPage() {
 			</header>
 
 			<section>
-				<div className="flex justify-end py-2">
-					<Button variant="default" onClick={() => setOpenCreate(true)}>
+				<div className="flex justify-between py-2 gap-3">
+					<SearchBar
+						className="w-10/12 xl:w-11/12"
+						placeholder="Buscar huésped por nombre, apellido o número de documento"
+					/>
+
+					<Button
+						className="w-2/12 xl:w-1/12"
+						variant="default"
+						onClick={() => setOpenCreate(true)}
+					>
 						<Plus className="w-4 h-4" />
 						Agregar huésped
 					</Button>

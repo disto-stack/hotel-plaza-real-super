@@ -25,11 +25,16 @@ export default defineConfig({
 				"vitest.config.*",
 				"next.config.*",
 				"src/app/**/layout.tsx",
-				"src/app/**/page.tsx",
 				"src/components/providers/**",
 				"src/**/*.d.ts",
 				"src/**/*.types.*",
 			],
+			thresholds: {
+				statements: 90,
+				branches: 85,
+				functions: 90,
+				lines: 90,
+			},
 		},
 	},
 	resolve: {
