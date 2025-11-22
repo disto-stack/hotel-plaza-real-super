@@ -21,8 +21,6 @@
 		"apps:check-types": "turbo run check-types",
 		"apps:clean": "turbo run clean",
 		"apps:test": "turbo run test",
-		"apps:test:watch": "turbo run test:watch",
-		"apps:test:ui": "turbo run test:ui",
 		"apps:test:coverage": "turbo run test:coverage",
 		"supabase:start": "supabase start",
 		"supabase:stop": "supabase stop",

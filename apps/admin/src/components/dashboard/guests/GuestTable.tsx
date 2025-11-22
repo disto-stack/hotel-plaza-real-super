@@ -26,14 +26,17 @@ export default function GuestsTable({ guests }: GuestsTableProps) {
 		getCoreRowModel: getCoreRowModel(),
 	});
 	return (
-		<div className="rounded-md border overflow-hidden">
+		<div className="rounded-2xl border border-border overflow-hidden">
 			{guests.length > 0 && (
 				<Table>
-					<TableHeader>
+					<TableHeader className="py-4">
 						{table.getHeaderGroups().map((headerGroup) => (
-							<TableRow key={headerGroup.id}>
+							<TableRow
+								key={headerGroup.id}
+								className="border-b border-border bg-muted/30"
+							>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
+									<TableHead key={header.id} className="p-4">
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -52,9 +55,10 @@ export default function GuestsTable({ guests }: GuestsTableProps) {
 								<TableRow
 									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
+									className="border-b border-border last:border-b-0 cursor-pointer transition-colors hover:bg-muted/30"
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
+										<TableCell key={cell.id} className="p-4">
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext(),

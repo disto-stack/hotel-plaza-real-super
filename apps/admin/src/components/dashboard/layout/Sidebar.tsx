@@ -11,7 +11,10 @@ const menuItems = [{ icon: Users, label: "Huéspedes", href: "/guests" }];
 export default function Sidebar() {
 	const pathname = usePathname();
 	return (
-		<aside className="flex flex-col items-center gap-5 bg-card border-r border-border shadow-sm w-64 p-2">
+		<aside
+			className="flex flex-col items-center gap-5 bg-card border-r border-border shadow-sm w-64 p-2"
+			data-testid="sidebar"
+		>
 			<section className="flex items-center justify-center border-b border-border gap-2 py-2">
 				<div className="w-25 h-20 relative">
 					<Image
