@@ -1,7 +1,7 @@
 export enum RoomType {
 	SINGLE = "single",
 	DOUBLE = "double",
-	FAMILIAR = "familiar",
+	FAMILY = "family",
 }
 
 export interface Room {
