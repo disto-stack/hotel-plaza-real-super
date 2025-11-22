@@ -35,16 +35,6 @@ Deno.serve(async (req) => {
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 		);
 
-		const { data: _, error: userError } = await supabaseAdmin
-			.from("users")
-			.select("role")
-			.eq("id", user.id)
-			.single();
-
-		if (userError) {
-			return ResponseBuilder.internalServerError("Error verifying permissions");
-		}
-
 		const { data: rooms, error: roomsError } = await supabaseAdmin
 			.from("rooms")
 			.select("*");
@@ -61,7 +51,7 @@ Deno.serve(async (req) => {
 			"Rooms fetched successfully",
 		);
 	} catch (error) {
-		console.error("Error in get-guests function:", error);
+		console.error("Error in get-rooms function:", error);
 		return ResponseBuilder.error("Internal server error");
 	}
 });

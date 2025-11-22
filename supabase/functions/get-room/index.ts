@@ -35,18 +35,7 @@ Deno.serve(async (req) => {
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 		);
 
-		const { data: _, error: userError } = await supabaseAdmin
-			.from("users")
-			.select("role")
-			.eq("id", user.id)
-			.single();
-
-		if (userError) {
-			return ResponseBuilder.internalServerError("Error verifying permissions");
-		}
-
 		const { searchKey, searchValue } = getSearchParams(req);
-
 		if (!searchKey || !searchValue) {
 			return ResponseBuilder.badRequest("Search key and value are required");
 		}

@@ -18,5 +18,5 @@ export interface Room {
 	amenities: string[];
 	createdAt: string;
 	updatedAt: string;
-	deletedAt: string;
+	deletedAt?: string;
 }
