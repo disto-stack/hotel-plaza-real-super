@@ -58,9 +58,15 @@ $$ LANGUAGE plpgsql;
 
 -- ============================================================================
 -- Function 2: Log status changes to history table
+-- Note: SECURITY DEFINER is required so the trigger can insert records into
+-- occupation_status_history table which has RLS enabled but no INSERT policy
+-- (history should only be created by the system, not by users directly)
 -- ============================================================================
 CREATE OR REPLACE FUNCTION log_occupation_status_change()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
     IF OLD.status IS DISTINCT FROM NEW.status THEN
         INSERT INTO public.occupation_status_history (
