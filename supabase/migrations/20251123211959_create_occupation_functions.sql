@@ -122,7 +122,11 @@ $$ LANGUAGE plpgsql;
 --   3. COMMIT (validation runs here, ensuring primary guest exists)
 --
 -- If immediate validation is needed, use:
---   SET CONSTRAINTS trigger_validate_primary_guest_after_insert IMMEDIATE;
+--   SET CONSTRAINTS ALL IMMEDIATE;
+-- Or for specific triggers:
+--   SET CONSTRAINTS trigger_validate_primary_guest_after_insert,
+--                   trigger_validate_primary_guest_after_update,
+--                   trigger_validate_primary_guest_after_delete IMMEDIATE;
 -- ============================================================================
 CREATE OR REPLACE FUNCTION validate_occupation_has_primary_guest()
 RETURNS TRIGGER AS $$

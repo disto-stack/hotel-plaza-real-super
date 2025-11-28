@@ -47,7 +47,11 @@ CREATE TRIGGER trigger_validate_no_overlap
 --   4. COMMIT - at this point the validation will run
 --
 -- If you need the validation to run immediately (not deferred), you can use:
---   SET CONSTRAINTS trigger_validate_primary_guest_after_insert IMMEDIATE;
+--   SET CONSTRAINTS ALL IMMEDIATE;
+-- Or for specific triggers:
+--   SET CONSTRAINTS trigger_validate_primary_guest_after_insert,
+--                   trigger_validate_primary_guest_after_update,
+--                   trigger_validate_primary_guest_after_delete IMMEDIATE;
 -- ============================================================================
 CREATE CONSTRAINT TRIGGER trigger_validate_primary_guest_after_insert
     AFTER INSERT ON public.occupation_guests
