@@ -113,6 +113,17 @@ $$ LANGUAGE plpgsql;
 -- ============================================================================
 -- Function 4: Validate that occupation has at least one primary guest
 -- ============================================================================
+-- This function is used with DEFERRABLE INITIALLY DEFERRED constraint triggers
+-- to allow validation to be postponed until the end of a transaction.
+-- 
+-- This enables the following workflow in a single transaction:
+--   1. INSERT occupation record
+--   2. INSERT first guest with is_primary = TRUE
+--   3. COMMIT (validation runs here, ensuring primary guest exists)
+--
+-- If immediate validation is needed, use:
+--   SET CONSTRAINTS trigger_validate_primary_guest_after_insert IMMEDIATE;
+-- ============================================================================
 CREATE OR REPLACE FUNCTION validate_occupation_has_primary_guest()
 RETURNS TRIGGER AS $$
 DECLARE

@@ -34,18 +34,35 @@ CREATE TRIGGER trigger_validate_no_overlap
 -- ============================================================================
 -- Trigger 4: Validate primary guest exists (after occupation_guests changes)
 -- ============================================================================
-CREATE TRIGGER trigger_validate_primary_guest_after_insert
+-- NOTE: These triggers are created as DEFERRABLE INITIALLY DEFERRED constraint
+-- triggers. This allows the validation to be deferred to the end of the 
+-- transaction, which is necessary when:
+--   1. Creating an occupation and its guests in the same transaction
+--   2. Modifying multiple guests at once (e.g., changing primary guest)
+--
+-- Expected order of operations within a transaction:
+--   1. INSERT the occupation record into public.occupations
+--   2. INSERT at least one guest with is_primary = TRUE into public.occupation_guests
+--   3. (Optional) INSERT additional guests with is_primary = FALSE
+--   4. COMMIT - at this point the validation will run
+--
+-- If you need the validation to run immediately (not deferred), you can use:
+--   SET CONSTRAINTS trigger_validate_primary_guest_after_insert IMMEDIATE;
+-- ============================================================================
+CREATE CONSTRAINT TRIGGER trigger_validate_primary_guest_after_insert
     AFTER INSERT ON public.occupation_guests
+    DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
     EXECUTE FUNCTION validate_occupation_has_primary_guest();
 
-CREATE TRIGGER trigger_validate_primary_guest_after_update
+CREATE CONSTRAINT TRIGGER trigger_validate_primary_guest_after_update
     AFTER UPDATE ON public.occupation_guests
+    DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
-    WHEN (OLD.is_primary IS DISTINCT FROM NEW.is_primary)
     EXECUTE FUNCTION validate_occupation_has_primary_guest();
 
-CREATE TRIGGER trigger_validate_primary_guest_after_delete
+CREATE CONSTRAINT TRIGGER trigger_validate_primary_guest_after_delete
     AFTER DELETE ON public.occupation_guests
+    DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
     EXECUTE FUNCTION validate_occupation_has_primary_guest();
