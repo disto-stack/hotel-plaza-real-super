@@ -125,6 +125,17 @@ USING (
     )
 );
 
+
+CREATE POLICY "System can insert occupation status history" 
+ON public.occupation_status_history FOR INSERT 
+WITH CHECK (
+    EXISTS (
+        SELECT 1 FROM public.users 
+        WHERE id = (SELECT auth.uid()) 
+        AND role IN ('admin'::user_role, 'receptionist'::user_role)
+    )
+);
+
 CREATE POLICY "Only admins can update occupation status history" 
 ON public.occupation_status_history FOR UPDATE 
 USING (

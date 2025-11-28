@@ -74,7 +74,7 @@ BEGIN
             OLD.status,
             NEW.status,
             NEW.updated_by,
-            NULL -- Can be set manually if needed
+            NULL
         );
     END IF;
     
@@ -205,7 +205,8 @@ BEGIN
     UPDATE public.occupations
     SET 
         status = 'checked_out',
-        updated_at = NOW()
+        updated_at = NOW(),
+        updated_by = NULL
     WHERE status IN ('checked_in', 'reserved')
     AND (
         check_out_date < CURRENT_DATE
