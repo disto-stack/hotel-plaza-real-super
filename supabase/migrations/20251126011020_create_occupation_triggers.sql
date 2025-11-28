@@ -59,6 +59,7 @@ CREATE CONSTRAINT TRIGGER trigger_validate_primary_guest_after_update
     AFTER UPDATE ON public.occupation_guests
     DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
+    WHEN (OLD.is_primary IS DISTINCT FROM NEW.is_primary)
     EXECUTE FUNCTION validate_occupation_has_primary_guest();
 
 CREATE CONSTRAINT TRIGGER trigger_validate_primary_guest_after_delete
