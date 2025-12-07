@@ -7,9 +7,19 @@ export interface ValidationRule {
 	required?: boolean;
 	minLength?: number;
 	maxLength?: number;
+	min?: number;
+	max?: number;
 	pattern?: RegExp;
 	custom?: (value: any) => string | null;
-	type?: "string" | "number" | "boolean" | "email" | "phone" | "date";
+	type?:
+		| "string"
+		| "number"
+		| "boolean"
+		| "email"
+		| "phone"
+		| "date"
+		| "uuid"
+		| "time";
 	enum?: any[];
 }
 
@@ -85,6 +95,22 @@ export class FieldValidator {
 			);
 		}
 
+		if (typeof value === "number") {
+			if (rules.min && value < rules.min) {
+				this.addError(
+					fieldName,
+					`${fieldName} must be greater than or equal to ${rules.min}`,
+				);
+			}
+
+			if (rules.max && value > rules.max) {
+				this.addError(
+					fieldName,
+					`${fieldName} must be less than or equal to ${rules.max}`,
+				);
+			}
+		}
+
 		if (rules.custom) {
 			const customError = rules.custom(value);
 			if (customError) {
@@ -127,6 +153,19 @@ export class FieldValidator {
 				const date = new Date(value);
 				return Number.isNaN(date.getTime())
 					? `${fieldName} must be a valid date`
+					: null;
+			}
+			case "uuid": {
+				const uuidRegex =
+					/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+				return !uuidRegex.test(value)
+					? `${fieldName} must be a valid UUID`
+					: null;
+			}
+			case "time": {
+				const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/;
+				return !timeRegex.test(value)
+					? `${fieldName} must be in HH:mm:ss or HH:mm format`
 					: null;
 			}
 			default:
