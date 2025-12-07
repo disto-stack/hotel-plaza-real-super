@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <we need to ignore this because we are using any> */
 export interface ApiErrorResponse {
 	success: false;
 	error?: string;
