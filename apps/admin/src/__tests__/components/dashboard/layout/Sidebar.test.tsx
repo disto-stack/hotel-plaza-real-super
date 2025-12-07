@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { Users } from "lucide-react";
 import { describe, expect, it } from "vitest";
 import Sidebar from "@/components/dashboard/layout/Sidebar";
 
