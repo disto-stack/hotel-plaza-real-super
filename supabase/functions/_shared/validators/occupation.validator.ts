@@ -10,21 +10,13 @@ export const occupationValidationConfig: FieldConfig = {
 		required: true,
 		type: "uuid",
 	},
-	checkInDate: {
+	checkInDatetime: {
 		required: true,
-		type: "date",
+		type: "datetime",
 	},
-	checkInTime: {
+	checkOutDatetime: {
 		required: true,
-		type: "time",
-	},
-	checkOutDate: {
-		required: true,
-		type: "date",
-	},
-	checkOutTime: {
-		required: true,
-		type: "time",
+		type: "datetime",
 	},
 	stayType: {
 		required: true,

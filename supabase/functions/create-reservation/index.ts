@@ -42,10 +42,8 @@ Deno.serve(async (req) => {
 
 		const validation = validateAndExtract(requestData, occupationValidator, [
 			"roomId",
-			"checkInDate",
-			"checkInTime",
-			"checkOutDate",
-			"checkOutTime",
+			"checkInDatetime",
+			"checkOutDatetime",
 			"stayType",
 			"numberOfGuests",
 			"totalPrice",

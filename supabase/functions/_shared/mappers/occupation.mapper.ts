@@ -10,10 +10,8 @@ import type {
 export interface Occupation {
 	id: string;
 	roomId: string;
-	checkInDate: string;
-	checkInTime: string;
-	checkOutDate: string;
-	checkOutTime: string;
+	checkInDatetime: string;
+	checkOutDatetime: string;
 	stayType: StayType;
 	numberOfGuests: number;
 	totalPrice: number;
@@ -39,10 +37,8 @@ export interface OccupationGuest {
 export interface OccupationResponse {
 	id: string;
 	roomId: string;
-	checkInDate: string;
-	checkInTime: string;
-	checkOutDate: string;
-	checkOutTime: string;
+	checkInDatetime: string;
+	checkOutDatetime: string;
 	stayType: StayType;
 	numberOfGuests: number;
 	totalPrice: number;
@@ -64,14 +60,10 @@ export function occupationToDatabase(
 	const dbData: Record<string, unknown> = {};
 
 	if ("roomId" in occupationData) dbData.room_id = occupationData.roomId;
-	if ("checkInDate" in occupationData)
-		dbData.check_in_date = occupationData.checkInDate;
-	if ("checkInTime" in occupationData)
-		dbData.check_in_time = occupationData.checkInTime;
-	if ("checkOutDate" in occupationData)
-		dbData.check_out_date = occupationData.checkOutDate;
-	if ("checkOutTime" in occupationData)
-		dbData.check_out_time = occupationData.checkOutTime;
+	if ("checkInDatetime" in occupationData)
+		dbData.check_in_datetime = occupationData.checkInDatetime;
+	if ("checkOutDatetime" in occupationData)
+		dbData.check_out_datetime = occupationData.checkOutDatetime;
 	if ("stayType" in occupationData) dbData.stay_type = occupationData.stayType;
 	if ("numberOfGuests" in occupationData)
 		dbData.number_of_guests = occupationData.numberOfGuests;
@@ -93,10 +85,8 @@ export function occupationToApi(
 	return {
 		id: occupationData.id as string,
 		roomId: occupationData.room_id as string,
-		checkInDate: occupationData.check_in_date as string,
-		checkInTime: occupationData.check_in_time as string,
-		checkOutDate: occupationData.check_out_date as string,
-		checkOutTime: occupationData.check_out_time as string,
+		checkInDatetime: occupationData.check_in_datetime as string,
+		checkOutDatetime: occupationData.check_out_datetime as string,
 		stayType: occupationData.stay_type as StayType,
 		numberOfGuests: occupationData.number_of_guests as number,
 		totalPrice: occupationData.total_price as number,
@@ -123,10 +113,8 @@ export function createOccupationToDatabase(
 ): Record<string, unknown> {
 	return {
 		room_id: occupationData.roomId,
-		check_in_date: occupationData.checkInDate,
-		check_in_time: occupationData.checkInTime,
-		check_out_date: occupationData.checkOutDate,
-		check_out_time: occupationData.checkOutTime,
+		check_in_datetime: occupationData.checkInDatetime,
+		check_out_datetime: occupationData.checkOutDatetime,
 		stay_type: occupationData.stayType,
 		number_of_guests: occupationData.numberOfGuests,
 		total_price: occupationData.totalPrice,
@@ -144,14 +132,10 @@ export function updateOccupationToDatabase(
 
 	if (occupationData.roomId !== undefined)
 		dbData.room_id = occupationData.roomId;
-	if (occupationData.checkInDate !== undefined)
-		dbData.check_in_date = occupationData.checkInDate;
-	if (occupationData.checkInTime !== undefined)
-		dbData.check_in_time = occupationData.checkInTime;
-	if (occupationData.checkOutDate !== undefined)
-		dbData.check_out_date = occupationData.checkOutDate;
-	if (occupationData.checkOutTime !== undefined)
-		dbData.check_out_time = occupationData.checkOutTime;
+	if (occupationData.checkInDatetime !== undefined)
+		dbData.check_in_datetime = occupationData.checkInDatetime;
+	if (occupationData.checkOutDatetime !== undefined)
+		dbData.check_out_datetime = occupationData.checkOutDatetime;
 	if (occupationData.stayType !== undefined)
 		dbData.stay_type = occupationData.stayType;
 	if (occupationData.numberOfGuests !== undefined)

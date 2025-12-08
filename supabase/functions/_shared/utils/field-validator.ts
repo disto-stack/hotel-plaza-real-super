@@ -18,6 +18,7 @@ export interface ValidationRule {
 		| "email"
 		| "phone"
 		| "date"
+		| "datetime"
 		| "uuid"
 		| "time";
 	enum?: any[];
@@ -153,6 +154,12 @@ export class FieldValidator {
 				const date = new Date(value);
 				return Number.isNaN(date.getTime())
 					? `${fieldName} must be a valid date`
+					: null;
+			}
+			case "datetime": {
+				const datetime = new Date(value);
+				return Number.isNaN(datetime.getTime())
+					? `${fieldName} must be a valid datetime`
 					: null;
 			}
 			case "uuid": {

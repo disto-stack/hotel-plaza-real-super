@@ -12,10 +12,8 @@ export enum OccupationStatus {
 
 export interface CreateOccupationRequest {
 	roomId: string;
-	checkInDate: string; // ISO date string (YYYY-MM-DD)
-	checkInTime: string; // Time string (HH:mm:ss)
-	checkOutDate: string; // ISO date string (YYYY-MM-DD)
-	checkOutTime: string; // Time string (HH:mm:ss)
+	checkInDatetime: string; // ISO datetime string (YYYY-MM-DDTHH:mm:ss.sssZ)
+	checkOutDatetime: string; // ISO datetime string (YYYY-MM-DDTHH:mm:ss.sssZ)
 	stayType: StayType;
 	numberOfGuests: number;
 	totalPrice: number;
@@ -28,10 +26,8 @@ export interface CreateOccupationRequest {
 
 export interface UpdateOccupationRequest {
 	roomId?: string;
-	checkInDate?: string;
-	checkInTime?: string;
-	checkOutDate?: string;
-	checkOutTime?: string;
+	checkInDatetime?: string;
+	checkOutDatetime?: string;
 	stayType?: StayType;
 	numberOfGuests?: number;
 	totalPrice?: number;
