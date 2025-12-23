@@ -6,6 +6,8 @@ import type {
 	StayType,
 	UpdateOccupationRequest,
 } from "../types/occupation.type.ts";
+import type { Room } from "../types/room.type.ts";
+import { roomToApi } from "./room.mapper.ts";
 
 export interface Occupation {
 	id: string;
@@ -52,6 +54,7 @@ export interface OccupationResponse {
 	updatedAt: string;
 	deletedAt?: string;
 	guests?: OccupationGuest[];
+	room?: Room;
 }
 
 export function occupationToDatabase(
@@ -82,7 +85,7 @@ export function occupationToDatabase(
 export function occupationToApi(
 	occupationData: Record<string, unknown>,
 ): OccupationResponse {
-	return {
+	const response: OccupationResponse = {
 		id: occupationData.id as string,
 		roomId: occupationData.room_id as string,
 		checkInDatetime: occupationData.check_in_datetime as string,
@@ -100,6 +103,12 @@ export function occupationToApi(
 		updatedAt: occupationData.updated_at as string,
 		deletedAt: occupationData.deleted_at as string | undefined,
 	};
+
+	if (occupationData.rooms) {
+		response.room = roomToApi(occupationData.rooms as Record<string, unknown>);
+	}
+
+	return response;
 }
 
 export function occupationsToApiArray(
