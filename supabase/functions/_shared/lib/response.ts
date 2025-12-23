@@ -235,6 +235,13 @@ export class ResponseBuilder {
 	): Response {
 		return ResponseBuilder.success(data, message, HTTP_STATUS_CODES.CREATED);
 	}
+
+	static deleted(
+		data: any,
+		message: string = "Deleted successfully",
+	): Response {
+		return ResponseBuilder.success(data, message, HTTP_STATUS_CODES.NO_CONTENT);
+	}
 }
 
 export const createValidationError = (

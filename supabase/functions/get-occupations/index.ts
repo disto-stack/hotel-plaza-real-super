@@ -56,7 +56,8 @@ Deno.serve(async (req) => {
 
 function buildQuery(req: Request, client: SupabaseClient){
 	const query = client.from("occupations")
-		.select("*, rooms(id, room_number)");
+		.select("*, rooms(id, room_number)")
+		.is("deleted_at", null);
 
 	const url = new URL(req.url);
 
