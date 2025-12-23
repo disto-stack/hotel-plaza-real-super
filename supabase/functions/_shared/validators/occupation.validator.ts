@@ -49,6 +49,7 @@ export const occupationValidationConfig: FieldConfig = {
 			OccupationStatus.CHECKED_OUT,
 			OccupationStatus.CANCELLED,
 		],
+		required: true,
 	},
 	notes: {
 		type: "string",

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /** biome-ignore-all lint/suspicious/noExplicitAny: <we need to ignore this because we are using any> */
 
 import { type ErrorDetails, ResponseBuilder } from "../lib/response.ts";

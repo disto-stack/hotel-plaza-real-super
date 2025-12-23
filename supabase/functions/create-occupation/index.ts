@@ -48,6 +48,7 @@ Deno.serve(async (req) => {
 			"numberOfGuests",
 			"totalPrice",
 			"guests",
+			"status",
 		]);
 
 		if (!validation.isValid) {
