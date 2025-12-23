@@ -25,6 +25,7 @@ export interface CreateOccupationRequest {
 }
 
 export interface UpdateOccupationRequest {
+	id: string;
 	roomId?: string;
 	checkInDatetime?: string;
 	checkOutDatetime?: string;

@@ -24,6 +24,7 @@ export const HTTP_METHODS = {
 	PUT: "PUT",
 	DELETE: "DELETE",
 	OPTIONS: "OPTIONS",
+	PATCH: "PATCH",
 };
 
 export interface ApiResponse<T = any> {

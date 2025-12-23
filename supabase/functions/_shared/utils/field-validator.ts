@@ -49,75 +49,129 @@ export class FieldValidator {
 		value: any,
 		rules: ValidationRule,
 	): void {
+		this.validateFieldValue(fieldName, value, rules, true, true);
+	}
+
+	validateFieldValue(
+		fieldName: string,
+		value: any,
+		rules: ValidationRule,
+		checkRequired: boolean = true,
+		addToErrors: boolean = false,
+	): ErrorDetails[] {
+		const fieldErrors: ErrorDetails[] = [];
+
 		if (
+			checkRequired &&
 			rules.required &&
 			(value === undefined || value === null || value === "")
 		) {
-			this.addError(fieldName, `${fieldName} is required`);
-			return;
+			const error = createValidationError(fieldName, `${fieldName} is required`);
+			fieldErrors.push(error);
+			if (addToErrors) {
+				this.addError(fieldName, error.message);
+			}
+			return fieldErrors;
 		}
 
 		if (value === undefined || value === null || value === "") {
-			return;
+			return fieldErrors;
 		}
 
 		if (rules.type) {
 			const typeError = this.validateType(fieldName, value, rules.type);
 			if (typeError) {
-				this.addError(fieldName, typeError);
-				return;
+				const error = createValidationError(fieldName, typeError);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
+				return fieldErrors;
 			}
 		}
 
 		if (typeof value === "string") {
 			if (rules.minLength && value.length < rules.minLength) {
-				this.addError(
+				const error = createValidationError(
 					fieldName,
 					`${fieldName} must be at least ${rules.minLength} characters`,
 				);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
 			}
 
 			if (rules.maxLength && value.length > rules.maxLength) {
-				this.addError(
+				const error = createValidationError(
 					fieldName,
 					`${fieldName} must be at most ${rules.maxLength} characters`,
 				);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
 			}
 
 			if (rules.pattern && !rules.pattern.test(value)) {
-				this.addError(fieldName, `${fieldName} has invalid format`);
+				const error = createValidationError(
+					fieldName,
+					`${fieldName} has invalid format`,
+				);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
 			}
 		}
 
 		if (rules.enum && !rules.enum.includes(value)) {
-			this.addError(
+			const error = createValidationError(
 				fieldName,
 				`${fieldName} must be one of: ${rules.enum.join(", ")}`,
 			);
+			fieldErrors.push(error);
+			if (addToErrors) {
+				this.addError(fieldName, error.message);
+			}
 		}
 
 		if (typeof value === "number") {
-			if (rules.min && value < rules.min) {
-				this.addError(
+			if (rules.min !== undefined && value < rules.min) {
+				const error = createValidationError(
 					fieldName,
 					`${fieldName} must be greater than or equal to ${rules.min}`,
 				);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
 			}
 
-			if (rules.max && value > rules.max) {
-				this.addError(
+			if (rules.max !== undefined && value > rules.max) {
+				const error = createValidationError(
 					fieldName,
 					`${fieldName} must be less than or equal to ${rules.max}`,
 				);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
 			}
 		}
 
 		if (rules.custom) {
 			const customError = rules.custom(value);
 			if (customError) {
-				this.addError(fieldName, customError);
+				const error = createValidationError(fieldName, customError);
+				fieldErrors.push(error);
+				if (addToErrors) {
+					this.addError(fieldName, error.message);
+				}
 			}
 		}
+
+		return fieldErrors;
 	}
 
 	private validateType(
