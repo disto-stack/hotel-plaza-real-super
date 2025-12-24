@@ -13,7 +13,7 @@ export default function GuestsContent() {
 	const [openCreate, setOpenCreate] = useState(false);
 
 	return (
-		<main className="flex-1 p-4" data-testid="guests-page">
+		<div data-testid="guests-page">
 			<header>
 				<h1 className="text-3xl font-semibold font-heading">Huéspedes</h1>
 				<p className="text-sm text-muted-foreground font-sans pt-2">
@@ -54,6 +54,6 @@ export default function GuestsContent() {
 				open={openCreate}
 				onClose={() => setOpenCreate(false)}
 			/>
-		</main>
+		</div>
 	);
 }
