@@ -24,6 +24,7 @@ export const HTTP_METHODS = {
 	PUT: "PUT",
 	DELETE: "DELETE",
 	OPTIONS: "OPTIONS",
+	PATCH: "PATCH",
 };
 
 export interface ApiResponse<T = any> {
@@ -233,6 +234,13 @@ export class ResponseBuilder {
 		message: string = "Created successfully",
 	): Response {
 		return ResponseBuilder.success(data, message, HTTP_STATUS_CODES.CREATED);
+	}
+
+	static deleted(
+		data: any,
+		message: string = "Deleted successfully",
+	): Response {
+		return ResponseBuilder.success(data, message, HTTP_STATUS_CODES.NO_CONTENT);
 	}
 }
 
