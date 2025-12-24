@@ -73,20 +73,23 @@ Deno.serve(async (req) => {
 			return ResponseBuilder.badRequest("Occupation is already deleted");
 		}
 
-		const { data: deletedOccupation, error: deletedOccupationError } = await supabaseAdmin
-			.from("occupations")
-			.update({
-				deleted_at: new Date().toISOString(),
-				updated_by: user.id,
-			})
-			.eq("id", id)
-			.is("deleted_at", null)
-			.select()
-			.single();
+		const { data: deletedOccupation, error: deletedOccupationError } =
+			await supabaseAdmin
+				.from("occupations")
+				.update({
+					deleted_at: new Date().toISOString(),
+					updated_by: user.id,
+				})
+				.eq("id", id)
+				.is("deleted_at", null)
+				.select()
+				.single();
 
 		if (deletedOccupationError) {
 			if (deletedOccupationError.code === "PGRST116") {
-				return ResponseBuilder.notFound("Occupation not found or already deleted");
+				return ResponseBuilder.notFound(
+					"Occupation not found or already deleted",
+				);
 			}
 
 			return ResponseBuilder.internalServerError(
@@ -100,7 +103,7 @@ Deno.serve(async (req) => {
 			responseData,
 			"Occupation deleted successfully",
 		);
-	} catch (error) {	
+	} catch (error) {
 		console.error("Error in delete-occupation function:", error);
 		return ResponseBuilder.error("Internal server error");
 	}

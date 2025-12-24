@@ -58,7 +58,10 @@ Deno.serve(async (req) => {
 		}
 
 		const responseData = occupationToApi(occupation);
-		return ResponseBuilder.success(responseData, "Occupation fetched successfully");
+		return ResponseBuilder.success(
+			responseData,
+			"Occupation fetched successfully",
+		);
 	} catch (error) {
 		console.error("Error in get-occupation function:", error);
 		return ResponseBuilder.error("Internal server error");

@@ -66,7 +66,10 @@ export class FieldValidator {
 			rules.required &&
 			(value === undefined || value === null || value === "")
 		) {
-			const error = createValidationError(fieldName, `${fieldName} is required`);
+			const error = createValidationError(
+				fieldName,
+				`${fieldName} is required`,
+			);
 			fieldErrors.push(error);
 			if (addToErrors) {
 				this.addError(fieldName, error.message);

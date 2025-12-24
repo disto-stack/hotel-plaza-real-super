@@ -35,7 +35,10 @@ Deno.serve(async (req) => {
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 		);
 
-		const { data: occupations, error: occupationsError } = await buildQuery(req, supabaseAdmin);
+		const { data: occupations, error: occupationsError } = await buildQuery(
+			req,
+			supabaseAdmin,
+		);
 		if (occupationsError) {
 			return ResponseBuilder.internalServerError(
 				`Error getting occupations: ${occupationsError.message}`,
@@ -54,8 +57,9 @@ Deno.serve(async (req) => {
 	}
 });
 
-function buildQuery(req: Request, client: SupabaseClient){
-	const query = client.from("occupations")
+function buildQuery(req: Request, client: SupabaseClient) {
+	const query = client
+		.from("occupations")
 		.select("*, rooms(id, room_number)")
 		.is("deleted_at", null);
 
@@ -77,7 +81,12 @@ function buildQuery(req: Request, client: SupabaseClient){
 	const orderDirection = url.searchParams.get("orderDirection");
 
 	if (orderBy) {
-		query.order(orderBy, orderDirection && orderDirection === "asc" ? { ascending: true } : { ascending: false });
+		query.order(
+			orderBy,
+			orderDirection && orderDirection === "asc"
+				? { ascending: true }
+				: { ascending: false },
+		);
 	}
 
 	if (minPrice) {

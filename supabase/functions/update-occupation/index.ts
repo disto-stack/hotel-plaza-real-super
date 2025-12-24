@@ -3,7 +3,7 @@ import { AuthGuard } from "_shared/lib/guards/auth.guard.ts";
 import { HTTP_METHODS, ResponseBuilder } from "_shared/lib/response.ts";
 import {
 	occupationToApi,
-  updateOccupationToDatabase,
+	updateOccupationToDatabase,
 } from "_shared/mappers/occupation.mapper.ts";
 import type { UpdateOccupationRequest } from "_shared/types/occupation.type.ts";
 import { validatePartial } from "_shared/utils/validation.helper.ts";
@@ -66,12 +66,13 @@ Deno.serve(async (req) => {
 		const dbData = updateOccupationToDatabase(occupationData);
 		dbData.updated_by = user.id;
 
-		const { data: updatedOccupation, error: updatedOccupationError } = await supabaseAdmin
-			.from("occupations")
-			.update(dbData)
-			.eq("id", id)
-			.select()
-			.single();
+		const { data: updatedOccupation, error: updatedOccupationError } =
+			await supabaseAdmin
+				.from("occupations")
+				.update(dbData)
+				.eq("id", id)
+				.select()
+				.single();
 
 		if (updatedOccupationError) {
 			if (updatedOccupationError.code === "PGRST116") {
@@ -90,7 +91,7 @@ Deno.serve(async (req) => {
 			return ResponseBuilder.internalServerError(
 				`Error updating occupation: ${updatedOccupationError.message}`,
 			);
-		} 
+		}
 
 		const responseData = occupationToApi(updatedOccupation);
 
