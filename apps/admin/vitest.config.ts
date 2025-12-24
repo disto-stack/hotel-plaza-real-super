@@ -24,6 +24,7 @@ export default defineConfig({
 				"src/components/ui/dropdown-menu.tsx",
 				"src/components/ui/table.tsx",
 				"src/middleware.ts",
+				"src/proxy.ts",
 				"tailwind.config.*",
 				"postcss.config.*",
 				"vite.config.*",
