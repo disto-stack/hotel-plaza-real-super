@@ -40,6 +40,20 @@ Deno.serve(async (req) => {
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 		);
 
+		const { data: userData, error: userError } = await supabaseAdmin
+			.from("users")
+			.select("role")
+			.eq("id", user.id)
+			.single();
+
+		if (userError) {
+			return ResponseBuilder.internalServerError("Error verifying permissions");
+		}
+
+		if (userData?.role !== "admin") {
+			return ResponseBuilder.forbidden("Only admins can delete occupations");
+		}
+
 		const { data: existingOccupation, error: fetchError } = await supabaseAdmin
 			.from("occupations")
 			.select("id, deleted_at")
