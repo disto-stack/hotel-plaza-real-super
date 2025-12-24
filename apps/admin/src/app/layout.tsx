@@ -23,8 +23,8 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Hotel Management System",
-	description: "Hotel Management System",
+	title: "Panel de administración - Hotel Plaza Real",
+	description: "Panel de administración del Hotel Plaza Real",
 };
 
 export default function RootLayout({
