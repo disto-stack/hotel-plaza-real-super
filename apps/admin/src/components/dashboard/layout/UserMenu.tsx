@@ -33,7 +33,12 @@ export default function UserMenu() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" size="icon" className="rounded-full">
+				<Button
+					variant="ghost"
+					size="icon"
+					className="rounded-full"
+					data-testid="user-menu-trigger"
+				>
 					<User className="w-4 h-4" />
 				</Button>
 			</DropdownMenuTrigger>
@@ -48,6 +53,7 @@ export default function UserMenu() {
 				<DropdownMenuItem
 					className="transition-colors duration-75"
 					onClick={handleSignOut}
+					data-testid="sign-out-button"
 				>
 					<LogOut className="w-4 h-4" />
 					<span className="text-sm font-medium text-destructive">
