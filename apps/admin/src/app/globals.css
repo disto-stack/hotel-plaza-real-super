@@ -22,6 +22,22 @@
 	--ring: #d7b764;
 }
 
+.dark {
+	--primary-foreground: #1e293b;
+
+	--background: #0f172a;
+	--card: #1e293b;
+	--muted: #334155;
+	--input: #1e293b;
+
+	--foreground: #f8f9fa;
+	--muted-foreground: #e2e8f0;
+
+	--destructive: #ef4444;
+	--border: #334155;
+	--ring: #d7b764;
+}
+
 @theme inline {
 	--color-primary: var(--primary);
 	--color-primary-foreground: var(--primary-foreground);

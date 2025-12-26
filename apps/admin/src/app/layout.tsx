@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -33,13 +34,22 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="es">
+		<html lang="es" suppressHydrationWarning>
 			<body
 				className={`${inter.variable} ${poppins.variable} ${jetBrainsMono.variable} antialiased`}
 			>
 				<Toaster position="top-center" richColors closeButton duration={5000} />
 
-				<QueryProvider>{children}</QueryProvider>
+				<QueryProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+					</ThemeProvider>
+				</QueryProvider>
 			</body>
 		</html>
 	);

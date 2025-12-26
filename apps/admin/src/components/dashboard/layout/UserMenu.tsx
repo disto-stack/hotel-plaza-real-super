@@ -42,12 +42,12 @@ export default function UserMenu() {
 					<User className="w-4 h-4" />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="bg-white">
+			<DropdownMenuContent className="bg-card">
 				<DropdownMenuLabel>
-					<span className="block">
+					<span className="block text-foreground">
 						{user?.first_name} {user?.last_name}
 					</span>
-					<span className="text-xs text-gray-500">{user?.email}</span>
+					<span className="text-xs text-muted-foreground">{user?.email}</span>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem

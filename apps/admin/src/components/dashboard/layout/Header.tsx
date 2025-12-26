@@ -1,22 +1,16 @@
-import { Moon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+"use client";
+import dynamic from "next/dynamic";
 import UserMenu from "./UserMenu";
 
-Moon;
+const ThemeSwitcher = dynamic(() => import("./ThemeSwitcher"), { ssr: false });
+
 export default function Header() {
 	return (
 		<header
 			className="flex items-center justify-end gap-2 p-4 border-b border-border"
 			data-testid="header"
 		>
-			<Button
-				variant="ghost"
-				size="icon"
-				className="rounded-full"
-				data-testid="theme-toggle-button"
-			>
-				<Moon className="w-4 h-4" />
-			</Button>
+			<ThemeSwitcher />
 			<UserMenu />
 		</header>
 	);
