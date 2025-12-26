@@ -93,9 +93,7 @@ export function useAuth() {
 
 		setLoading(false);
 
-		if (typeof window !== "undefined") {
-			window.location.href = "/login";
-		}
+		return true;
 	};
 
 	const signIn = async (email: string, password: string) => {

@@ -342,7 +342,6 @@ describe("useAuth", () => {
 		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(true);
 		expect(mockUseAuthStore.logout).toHaveBeenCalled();
 		expect(mockUseAuthStore.setLoading).toHaveBeenCalledWith(false);
-		expect(window.location.href).toBe("/login");
 
 		(window as any).location = originalLocation;
 	});

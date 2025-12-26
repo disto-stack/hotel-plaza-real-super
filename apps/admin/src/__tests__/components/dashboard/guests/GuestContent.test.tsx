@@ -103,7 +103,7 @@ describe("Guests Page Content", () => {
 	it("should render the add guest button", () => {
 		render(<GuestsContent />);
 
-		const addButton = screen.getByRole("button", { name: /agregar huésped/i });
+		const addButton = screen.getByRole("button", { name: /agregar/i });
 		expect(addButton).toBeInTheDocument();
 	});
 
@@ -178,7 +178,7 @@ describe("Guests Page Content", () => {
 		const user = userEvent.setup();
 		render(<GuestsContent />);
 
-		const addButton = screen.getByRole("button", { name: /agregar huésped/i });
+		const addButton = screen.getByRole("button", { name: /agregar/i });
 		await user.click(addButton);
 
 		expect(screen.getByTestId("guest-create-form")).toBeInTheDocument();

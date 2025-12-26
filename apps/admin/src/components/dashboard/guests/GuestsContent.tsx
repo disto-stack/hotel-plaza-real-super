@@ -34,7 +34,7 @@ export default function GuestsContent() {
 						onClick={() => setOpenCreate(true)}
 					>
 						<Plus className="w-4 h-4" />
-						Agregar huésped
+						Agregar
 					</Button>
 				</div>
 
