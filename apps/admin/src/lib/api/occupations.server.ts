@@ -1,5 +1,5 @@
 import apiServer from "@/lib/axios.server";
-import type { Occupation } from "../types/occupation.type";
+import type { Occupation } from "../types/occupation.types";
 
 export const occupationsApiServer = {
 	getOccupations: async (): Promise<Occupation[]> => {

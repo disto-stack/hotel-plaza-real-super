@@ -12,6 +12,20 @@ export interface Guest {
 	updated_at: string;
 }
 
+export interface GuestResponse {
+	id: string;
+	firstName: string;
+	lastName: string;
+	email: string | null;
+	phone: string | null;
+	documentType: string;
+	documentNumber: string;
+	nationality: string;
+	occupation?: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export interface CreateGuestData {
 	firstName: string;
 	lastName: string;

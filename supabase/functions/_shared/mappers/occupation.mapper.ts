@@ -7,6 +7,7 @@ import type {
 	UpdateOccupationRequest,
 } from "../types/occupation.type.ts";
 import type { Room } from "../types/room.type.ts";
+import { type Guest, guestToApi } from "./guest.mapper.ts";
 import { roomToApi } from "./room.mapper.ts";
 
 export interface Occupation {
@@ -32,6 +33,7 @@ export interface OccupationGuest {
 	id: string;
 	occupationId: string;
 	guestId: string;
+	guest?: Guest;
 	isPrimary: boolean;
 	createdAt: string;
 }
@@ -102,10 +104,17 @@ export function occupationToApi(
 		createdAt: occupationData.created_at as string,
 		updatedAt: occupationData.updated_at as string,
 		deletedAt: occupationData.deleted_at as string | undefined,
+		guests: occupationData.occupation_guests as OccupationGuest[] | undefined,
 	};
 
 	if (occupationData.rooms) {
 		response.room = roomToApi(occupationData.rooms as Record<string, unknown>);
+	}
+
+	if (occupationData.occupation_guests) {
+		response.guests = (
+			occupationData.occupation_guests as Record<string, unknown>[]
+		).map((guest) => occupationGuestToApi(guest));
 	}
 
 	return response;
@@ -169,6 +178,9 @@ export function occupationGuestToApi(
 		id: guestData.id as string,
 		occupationId: guestData.occupation_id as string,
 		guestId: guestData.guest_id as string,
+		guest: guestData.guests
+			? guestToApi(guestData.guests as Record<string, unknown>)
+			: undefined,
 		isPrimary: guestData.is_primary as boolean,
 		createdAt: guestData.created_at as string,
 	};

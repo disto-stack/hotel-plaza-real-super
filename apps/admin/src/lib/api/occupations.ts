@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import type { Occupation } from "../types/occupation.type";
+import type { Occupation } from "../types/occupation.types";
 
 export const occupationsApi = {
 	getOccupations: async (): Promise<Occupation[]> => {

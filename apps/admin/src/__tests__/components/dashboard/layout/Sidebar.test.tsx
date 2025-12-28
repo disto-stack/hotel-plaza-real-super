@@ -26,5 +26,6 @@ describe("Sidebar", () => {
 	it("should render the sidebar items", () => {
 		render(<Sidebar />);
 		expect(screen.getByText("Huéspedes")).toBeInTheDocument();
+		expect(screen.getByText("Ocupaciones")).toBeInTheDocument();
 	});
 });
