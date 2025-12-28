@@ -1,21 +1,12 @@
 import { QueryClient } from "@tanstack/react-query";
-import { guestsApiServer } from "@/lib/api/guests.server";
 
-export async function prefetchGuests() {
-	const queryClient = new QueryClient({
+export const createServerQueryClient = (): QueryClient =>
+	new QueryClient({
 		defaultOptions: {
 			queries: {
-				staleTime: 1000 * 60 * 5,
+				staleTime: 5 * 60 * 1000,
 				retry: 3,
 				refetchOnWindowFocus: false,
 			},
 		},
 	});
-
-	await queryClient.prefetchQuery({
-		queryKey: ["guests"],
-		queryFn: guestsApiServer.getGuests,
-	});
-
-	return queryClient;
-}

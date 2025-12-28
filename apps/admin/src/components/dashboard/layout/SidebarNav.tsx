@@ -1,11 +1,14 @@
 "use client";
 
-import { Users } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-const menuItems = [{ icon: Users, label: "Huéspedes", href: "/guests" }];
+const menuItems = [
+	{ icon: Users, label: "Huéspedes", href: "/guests" },
+	{ icon: Calendar, label: "Ocupaciones", href: "/occupations" },
+];
 
 export default function SidebarNav() {
 	const pathname = usePathname();
