@@ -1,4 +1,5 @@
-import type { Guest } from "./guest.types";
+import type { GuestResponse } from "./guest.types";
+import type { Room } from "./room.types";
 
 export enum StayType {
 	HOURLY = "hourly",
@@ -10,6 +11,15 @@ export enum OccupationStatus {
 	CHECKED_IN = "checked_in",
 	CHECKED_OUT = "checked_out",
 	CANCELLED = "cancelled",
+}
+
+export interface OccupationGuest {
+	id: string;
+	occupationId: string;
+	guestId: string;
+	guest?: GuestResponse;
+	isPrimary: boolean;
+	createdAt: string;
 }
 
 export interface Occupation {
@@ -29,5 +39,6 @@ export interface Occupation {
 	createdAt: string;
 	updatedAt: string;
 	deletedAt?: string;
-	guests?: Guest[];
+	room?: Room;
+	guests?: OccupationGuest[];
 }

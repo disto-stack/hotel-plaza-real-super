@@ -1,26 +1,21 @@
 "use client";
 
 import { useOccupations } from "@/hooks/useOccupations";
+import OccupationsDataTable from "./OccupationsDataTable";
 
 export default function GuestsContent() {
-	const { data: occupations, isLoading, error } = useOccupations();
+	const { data: occupations } = useOccupations();
 
 	return (
-		<div data-testid="guests-page">
+		<div data-testid="occupations-page">
 			<header>
 				<h1 className="text-3xl font-semibold font-heading">Ocupaciones</h1>
 				<p className="text-sm text-muted-foreground font-sans pt-2">
-					Aquí puedes ver todas las ocupaciones registradas en el sistema.
+					Aquí puedes ver todas las ocupaciones y reservas registradas en el
+					sistema.
 				</p>
 			</header>
-
-			<section>
-				{occupations?.map((occupation) => (
-					<div key={occupation.id}>
-						<h2>{occupation.id}</h2>
-					</div>
-				))}
-			</section>
+			{occupations && <OccupationsDataTable occupations={occupations} />}
 		</div>
 	);
 }
