@@ -25,6 +25,8 @@ export default defineConfig({
 				"src/components/ui/dropdown-menu.tsx",
 				"src/components/ui/table.tsx",
 				"src/components/ui/badge.tsx",
+				"src/components/ui/toggle.tsx",
+				"src/components/ui/toggle-group.tsx",
 				"src/middleware.ts",
 				"src/proxy.ts",
 				"tailwind.config.*",

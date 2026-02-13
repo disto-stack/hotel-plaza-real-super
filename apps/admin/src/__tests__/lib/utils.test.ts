@@ -1,6 +1,6 @@
 import { format } from "date-fns/format";
 import { es } from "date-fns/locale";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { formatDateTime } from "@/lib/utils";
 
 vi.mock("date-fns/format", () => ({

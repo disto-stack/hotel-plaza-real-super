@@ -1,7 +1,7 @@
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import React from "react";
+import { DataTableColumnHeader } from "@/components/shared/data-display/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
-import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader";
 import {
 	getOccupationStatusBadge,
 	getOccupationStatusLabel,

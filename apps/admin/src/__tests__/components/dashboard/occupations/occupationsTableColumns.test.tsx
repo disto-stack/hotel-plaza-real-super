@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: For testing purposes */
 import type { ColumnDef } from "@tanstack/react-table";
 import { render, screen } from "@testing-library/react";
 import type { JSX } from "react";
