@@ -6,7 +6,6 @@ type ViewType = "list" | "grid";
 
 interface ViewSwitcherProps {
 	className?: string;
-	value?: ViewType;
 	defaultValue?: ViewType;
 	onValueChange?: (value: ViewType) => void;
 }
@@ -18,7 +17,7 @@ export default function ViewSwitcher({
 }: ViewSwitcherProps) {
 	const [value, setValue] = useState<ViewType>(defaultValue);
 	const handleValueChange = (newValue: string) => {
-		if (!newValue) return;
+		if (!newValue || (newValue !== "list" && newValue !== "grid")) return;
 
 		const typedValue = newValue as ViewType;
 

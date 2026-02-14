@@ -41,10 +41,7 @@ export default function OccupationsContent() {
 
 				{occupations && view === "list" && (
 					<div data-testid="occupations-data-table-container">
-						<OccupationsDataTable
-							data-testid="occupations-data-table"
-							occupations={occupations}
-						/>
+						<OccupationsDataTable occupations={occupations} />
 					</div>
 				)}
 
