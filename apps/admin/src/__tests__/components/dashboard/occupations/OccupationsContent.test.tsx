@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: For testing purposes */
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import OccupationsContent from "@/components/dashboard/occupations/OccupationsContent";
 import { useOccupations } from "@/hooks/useOccupations";
@@ -104,5 +105,28 @@ describe("OccupationsContent", () => {
 
 		const dataTable = screen.getByTestId("occupations-data-table-container");
 		expect(dataTable).toBeInTheDocument();
+	});
+
+	it("should switch to grid view", async () => {
+		const user = userEvent.setup();
+
+		render(<OccupationsContent />);
+
+		expect(
+			screen.getByTestId("occupations-data-table-container"),
+		).toBeInTheDocument();
+		expect(
+			screen.queryByTestId("occupations-grid-container"),
+		).not.toBeInTheDocument();
+
+		const gridButton = screen.getByTestId("view-switcher-grid");
+		await user.click(gridButton);
+
+		expect(
+			screen.queryByTestId("occupations-data-table-container"),
+		).not.toBeInTheDocument();
+		expect(
+			screen.getByTestId("occupations-grid-container"),
+		).toBeInTheDocument();
 	});
 });

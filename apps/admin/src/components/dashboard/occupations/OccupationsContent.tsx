@@ -47,7 +47,7 @@ export default function OccupationsContent() {
 				)}
 
 				{occupations && view === "grid" && (
-					<div data-testid="occupations-grid">
+					<div data-testid="occupations-grid-container">
 						<OccupationsGrid occupations={occupations} />
 					</div>
 				)}

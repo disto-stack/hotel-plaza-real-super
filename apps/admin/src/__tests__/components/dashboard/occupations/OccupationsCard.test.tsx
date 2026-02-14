@@ -56,7 +56,7 @@ describe("OccupationsCard", () => {
 		numberOfGuests: 1,
 		totalPrice: 100,
 		createdAt: "2024-01-01T00:00:00Z",
-		updatedAt: "2024-01-01T0`0:00:00Z",
+		updatedAt: "2024-01-01T00:00:00Z",
 		room: {
 			id: "room-id-1",
 			roomNumber: "407",
@@ -97,7 +97,7 @@ describe("OccupationsCard", () => {
 		);
 	});
 
-	it("should render de primary guest", () => {
+	it("should render the primary guest", () => {
 		render(<OccupationsCard occupation={occupation} />);
 
 		const guestCard = screen.getByTestId("occupation-card-guest");
