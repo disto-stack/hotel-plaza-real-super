@@ -5,6 +5,7 @@ import { SearchBar } from "@/components/ui/SearchBar";
 import { useOccupations } from "@/hooks/useOccupations";
 import { occupancyStore } from "@/store/occupancyStore";
 import OccupationsDataTable from "./OccupationsDataTable";
+import OccupationsGrid from "./OccupationsGrid";
 
 export default function OccupationsContent() {
 	const { data: occupations } = useOccupations();
@@ -46,7 +47,9 @@ export default function OccupationsContent() {
 				)}
 
 				{occupations && view === "grid" && (
-					<div data-testid="occupations-grid">Grid</div>
+					<div data-testid="occupations-grid-container">
+						<OccupationsGrid occupations={occupations} />
+					</div>
 				)}
 			</div>
 		</div>
