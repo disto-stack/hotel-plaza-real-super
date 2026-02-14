@@ -80,4 +80,29 @@ describe("OccupationsContent", () => {
 			),
 		).toBeInTheDocument();
 	});
+
+	it("should render the search bar", () => {
+		render(<OccupationsContent />);
+
+		const searchInput = screen.getByTestId("occupations-search-bar");
+		expect(searchInput).toBeInTheDocument();
+		expect(searchInput).toHaveAttribute(
+			"placeholder",
+			"Buscar ocupación por número de habitación o nombre de huésped",
+		);
+	});
+
+	it("should render the view switcher", () => {
+		render(<OccupationsContent />);
+
+		const viewSwitcher = screen.getByTestId("view-switcher");
+		expect(viewSwitcher).toBeInTheDocument();
+	});
+
+	it("should render the occupations data table", () => {
+		render(<OccupationsContent />);
+
+		const dataTable = screen.getByTestId("occupations-data-table-container");
+		expect(dataTable).toBeInTheDocument();
+	});
 });

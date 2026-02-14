@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: For testing purposes */
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader";
+import { DataTableColumnHeader } from "@/components/shared/data-display/DataTableColumnHeader";
 
 describe("DataTableColumnHeader", () => {
 	it("should render without crashing", () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/shared/data-display/DataTable";
 import type { Guest } from "@/lib/types/guest.types";
 import { columns } from "./columns";
 

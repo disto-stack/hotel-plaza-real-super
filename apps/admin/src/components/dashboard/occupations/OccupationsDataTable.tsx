@@ -1,6 +1,6 @@
 import type { SortingState } from "@tanstack/react-table";
 import React from "react";
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/shared/data-display/DataTable";
 import type { Occupation } from "@/lib/types/occupation.types";
 import { occupationsTableColumns } from "./occupationsTableColumns";
 

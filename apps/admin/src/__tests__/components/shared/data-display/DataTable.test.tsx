@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: For testing purposes */
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { DataTable } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/shared/data-display/DataTable";
 
 describe("DataTable", () => {
 	it("should render without crashing", () => {
