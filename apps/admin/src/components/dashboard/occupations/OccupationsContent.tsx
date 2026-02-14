@@ -6,7 +6,7 @@ import { useOccupations } from "@/hooks/useOccupations";
 import { occupancyStore } from "@/store/occupancyStore";
 import OccupationsDataTable from "./OccupationsDataTable";
 
-export default function GuestsContent() {
+export default function OccupationsContent() {
 	const { data: occupations } = useOccupations();
 	const { view, setView } = occupancyStore();
 
