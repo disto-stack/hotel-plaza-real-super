@@ -27,6 +27,7 @@ export default defineConfig({
 				"src/components/ui/badge.tsx",
 				"src/components/ui/toggle.tsx",
 				"src/components/ui/toggle-group.tsx",
+				"src/components/ui/card.tsx",
 				"src/middleware.ts",
 				"src/proxy.ts",
 				"tailwind.config.*",
