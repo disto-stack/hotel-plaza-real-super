@@ -28,6 +28,8 @@ export default defineConfig({
 				"src/components/ui/toggle.tsx",
 				"src/components/ui/toggle-group.tsx",
 				"src/components/ui/card.tsx",
+				"src/components/ui/drawer.tsx",
+				"src/components/ui/collapsible.tsx",
 				"src/middleware.ts",
 				"src/proxy.ts",
 				"tailwind.config.*",

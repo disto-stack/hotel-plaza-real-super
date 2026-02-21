@@ -24,6 +24,7 @@ interface DataTableProps<TData, TValue> {
 	data: TData[];
 	sorting?: SortingState;
 	onSortingChange?: React.Dispatch<React.SetStateAction<SortingState>>;
+	onRowClick?: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -31,6 +32,7 @@ export function DataTable<TData, TValue>({
 	data,
 	sorting,
 	onSortingChange,
+	onRowClick,
 }: DataTableProps<TData, TValue>) {
 	const [internalSorting, setInternalSorting] = React.useState<SortingState>(
 		[],
@@ -89,6 +91,7 @@ export function DataTable<TData, TValue>({
 								data-testid={`data-table-row-${row.id}`}
 								data-state={row.getIsSelected() && "selected"}
 								className="border-b border-border last:border-b-0 cursor-pointer transition-colors hover:bg-muted/30"
+								onClick={() => onRowClick?.(row.original)}
 							>
 								{row.getVisibleCells().map((cell) => (
 									<TableCell key={cell.id} className="py-5 px-4">

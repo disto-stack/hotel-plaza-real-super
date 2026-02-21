@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import OccupationsCard from "@/components/dashboard/occupations/OccupationsCard";
 import { getRoomTypeLabel } from "@/lib/formatters";
@@ -27,7 +28,7 @@ describe("OccupationsCard", () => {
 					id: "guest-id-1",
 					firstName: "John",
 					lastName: "Doe",
-					email: "[EMAIL_ADDRESS]",
+					email: "john@doe.com",
 					phone: "123456789",
 					createdAt: "2024-01-01T00:00:00Z",
 					updatedAt: "2024-01-01T00:00:00Z",
@@ -43,7 +44,7 @@ describe("OccupationsCard", () => {
 					id: "guest-id-2",
 					firstName: "Juan",
 					lastName: "Manuel",
-					email: "[EMAIL_ADDRESS]",
+					email: "juan@manuel.com",
 					phone: "123456789",
 					createdAt: "2024-01-01T00:00:00Z",
 					updatedAt: "2024-01-01T00:00:00Z",
@@ -120,5 +121,16 @@ describe("OccupationsCard", () => {
 		expect(screen.getByTestId("occupation-card-check-out")).toHaveTextContent(
 			formatDateTime(occupation.checkOutDatetime),
 		);
+	});
+
+	it("should open the details drawer when the card is clicked", async () => {
+		const user = userEvent.setup();
+		render(<OccupationsCard occupation={occupation} />);
+
+		const card = screen.getByTestId("occupation-card-title").closest("div");
+		// biome-ignore lint/style/noNonNullAssertion: for testing purposes
+		await user.click(card!);
+
+		expect(screen.getByText("Detalles de la ocupación")).toBeInTheDocument();
 	});
 });

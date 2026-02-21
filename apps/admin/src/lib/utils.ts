@@ -10,3 +10,14 @@ export function cn(...inputs: ClassValue[]) {
 export function formatDateTime(dateTime: string) {
 	return format(dateTime, "EEEE, MMMM dd, yyyy, hh:mm a", { locale: es });
 }
+
+export function formatPrice(
+	price: number,
+	currency: string = "COP",
+	locale: string = "es-CO",
+) {
+	return price.toLocaleString(locale, {
+		style: "currency",
+		currency: currency,
+	});
+}

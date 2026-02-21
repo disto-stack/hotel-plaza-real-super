@@ -61,7 +61,7 @@ function buildQuery(req: Request, client: SupabaseClient) {
 	const query = client
 		.from("occupations")
 		.select(
-			"*, rooms(id, room_number, room_type), occupation_guests(id, is_primary, guests(id, first_name, last_name))",
+			"*, rooms(id, room_number, room_type), occupation_guests(id, is_primary, guests(id, first_name, last_name, document_type, document_number, email, phone))",
 		)
 		.is("deleted_at", null);
 
