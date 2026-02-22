@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
@@ -38,6 +39,7 @@ export default function RootLayout({
 			<body
 				className={`${inter.variable} ${poppins.variable} ${jetBrainsMono.variable} antialiased`}
 			>
+				<NextTopLoader showSpinner={false} color="#2563eb" />
 				<Toaster position="top-center" richColors closeButton duration={5000} />
 
 				<QueryProvider>
