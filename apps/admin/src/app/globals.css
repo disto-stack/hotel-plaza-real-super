@@ -61,6 +61,26 @@
 	--font-sans: var(--font-inter);
 	--font-mono: var(--font-jetbrains-mono);
 	--font-heading: var(--font-poppins);
+
+	--animate-collapsible-down: collapsible-down 0.1s ease-out;
+	--animate-collapsible-up: collapsible-up 0.1s ease-out;
+
+	@keyframes collapsible-down {
+		from {
+			height: 0;
+		}
+		to {
+			height: var(--radix-collapsible-content-height);
+		}
+	}
+	@keyframes collapsible-up {
+		from {
+			height: var(--radix-collapsible-content-height);
+		}
+		to {
+			height: 0;
+		}
+	}
 }
 
 body {
