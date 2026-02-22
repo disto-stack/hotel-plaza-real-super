@@ -1,5 +1,5 @@
 import type { SortingState } from "@tanstack/react-table";
-import React, { useState } from "react";
+import { useState } from "react";
 import { DataTable } from "@/components/shared/data-display/DataTable";
 import type { Occupation } from "@/lib/types/occupation.types";
 import { OccupationsDrawer } from "./OccupationsDrawer";
