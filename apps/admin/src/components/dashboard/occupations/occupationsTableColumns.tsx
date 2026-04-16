@@ -138,7 +138,11 @@ export const occupationsTableColumns: ColumnDef<Occupation>[] = [
 		},
 		accessorKey: "checkInDatetime",
 		cell: ({ row }) => {
-			return <span>{formatDateTime(row.original.checkInDatetime)}</span>;
+			return (
+				<span className="font-mono">
+					{formatDateTime(row.original.checkInDatetime)}
+				</span>
+			);
 		},
 		sortingFn: (rowA, rowB) =>
 			sortOccupationsByCheckIn(rowA.original, rowB.original),
@@ -149,7 +153,11 @@ export const occupationsTableColumns: ColumnDef<Occupation>[] = [
 		},
 		accessorKey: "checkOutDatetime",
 		cell: ({ row }) => {
-			return <span>{formatDateTime(row.original.checkOutDatetime)}</span>;
+			return (
+				<span className="font-mono">
+					{formatDateTime(row.original.checkOutDatetime)}
+				</span>
+			);
 		},
 		sortingFn: (rowA, rowB) =>
 			sortOccupationsByCheckOut(rowA.original, rowB.original),
@@ -161,7 +169,10 @@ export const occupationsTableColumns: ColumnDef<Occupation>[] = [
 		accessorKey: "status",
 		cell: ({ row }) => {
 			return (
-				<Badge variant={getOccupationStatusBadge(row.original.status)}>
+				<Badge
+					className="font-sans"
+					variant={getOccupationStatusBadge(row.original.status)}
+				>
 					{getOccupationStatusLabel(row.original.status)}
 				</Badge>
 			);
@@ -173,7 +184,11 @@ export const occupationsTableColumns: ColumnDef<Occupation>[] = [
 		header: "Tipo",
 		accessorKey: "stayType",
 		cell: ({ row }) => {
-			return <span>{getStayTypeLabel(row.original.stayType)}</span>;
+			return (
+				<span className="font-sans">
+					{getStayTypeLabel(row.original.stayType)}
+				</span>
+			);
 		},
 	},
 	{
