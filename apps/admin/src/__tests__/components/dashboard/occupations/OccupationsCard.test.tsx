@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import OccupationsCard from "@/components/dashboard/occupations/OccupationsCard";
 import { getRoomTypeLabel } from "@/lib/formatters";
 import type { GuestResponse } from "@/lib/types/guest.types";
@@ -11,6 +11,11 @@ import {
 } from "@/lib/types/occupation.types";
 import { type Room, RoomType } from "@/lib/types/room.types";
 import { formatDateTime } from "@/lib/utils";
+
+vi.mock("@/components/dashboard/occupations/OccupationsDrawer", () => ({
+	OccupationsDrawer: ({ open }: { open: boolean }) =>
+		open ? <div data-testid="mock-drawer">Detalles de la ocupación</div> : null,
+}));
 
 describe("OccupationsCard", () => {
 	const occupation: Occupation = {

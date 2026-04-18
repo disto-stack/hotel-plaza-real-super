@@ -29,6 +29,14 @@ vi.mock("./OccupationsGuestsCollapsible", () => ({
 	OccupationsGuestsCollapsible: () => <div data-testid="guests-collapsible" />,
 }));
 
+vi.mock(
+	"@/components/dashboard/occupations/CreateEditOccupationsDialog",
+	() => ({
+		__esModule: true,
+		default: () => <div data-testid="mock-create-occupations-dialog" />,
+	}),
+);
+
 describe("OccupationsDrawer", () => {
 	const mockOccupation: Occupation = {
 		id: "1",

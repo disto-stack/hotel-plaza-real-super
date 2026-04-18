@@ -14,6 +14,14 @@ vi.mock("@/hooks/useOccupations", () => ({
 	useOccupations: vi.fn(),
 }));
 
+vi.mock(
+	"@/components/dashboard/occupations/CreateEditOccupationsDialog",
+	() => ({
+		__esModule: true,
+		default: () => <div data-testid="mock-create-occupations-dialog" />,
+	}),
+);
+
 describe("OccupationsContent", () => {
 	const mockOccupations: Occupation[] = [
 		{

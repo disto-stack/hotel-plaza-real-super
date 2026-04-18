@@ -1,5 +1,5 @@
 import axios, { type AxiosError } from "axios";
-import { createClient } from "@/lib/supabase/client";
+import { authStore } from "@/store/authStore";
 
 const api = axios.create({
 	baseURL: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1`,
@@ -9,19 +9,11 @@ const api = axios.create({
 	},
 });
 
-api.interceptors.request.use(async (config) => {
-	const supabase = createClient();
+api.interceptors.request.use((config) => {
+	const token = authStore.getState().token;
 
-	if (!supabase) {
-		throw new Error("Supabase client not found");
-	}
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
-
-	if (session?.access_token) {
-		config.headers.Authorization = `Bearer ${session.access_token}`;
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
 	}
 
 	return config;

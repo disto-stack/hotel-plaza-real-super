@@ -36,12 +36,16 @@ export function useAuth() {
 		setLoading(true);
 
 		const checkSession = async () => {
-			const getSession = await supabase.auth.getSession();
+			const {
+				data: { session },
+			} = await supabase.auth.getSession();
 
-			if (getSession?.data?.session?.user) {
-				const userData = await fetchUserData(getSession.data.session.user.id);
+			if (session?.user) {
+				const userData = await fetchUserData(session.user.id);
+				authStore.getState().setToken(session.access_token);
 				setUser(userData);
 			} else {
+				authStore.getState().setToken(null);
 				setUser(null);
 			}
 
@@ -53,15 +57,20 @@ export function useAuth() {
 		const {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange(async (event, session) => {
-			if (event !== "SIGNED_IN" && event !== "SIGNED_OUT") {
+			if (event === "SIGNED_OUT") {
+				authStore.getState().setToken(null);
+				setUser(null);
+				setLoading(false);
 				return;
+			}
+
+			if (session?.access_token) {
+				authStore.getState().setToken(session.access_token);
 			}
 
 			if (event === "SIGNED_IN" && session?.user) {
 				const userData = await fetchUserData(session.user.id);
 				setUser(userData);
-			} else if (event === "SIGNED_OUT") {
-				setUser(null);
 			}
 
 			setLoading(false);
