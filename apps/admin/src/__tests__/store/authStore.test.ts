@@ -12,6 +12,7 @@ describe("authStore", () => {
 			const state = authStore.getState();
 
 			expect(state.user).toBeNull();
+			expect(state.token).toBeNull();
 			expect(state.isAuthenticated).toBe(false);
 			expect(state.isLoading).toBe(false);
 		});
@@ -20,6 +21,7 @@ describe("authStore", () => {
 			const state = authStore.getState();
 
 			expect(typeof state.setUser).toBe("function");
+			expect(typeof state.setToken).toBe("function");
 			expect(typeof state.setLoading).toBe("function");
 			expect(typeof state.logout).toBe("function");
 		});
@@ -74,6 +76,24 @@ describe("authStore", () => {
 		});
 	});
 
+	describe("setToken", () => {
+		it("should set token", () => {
+			const mockToken = "mock-token";
+
+			authStore.getState().setToken(mockToken);
+
+			expect(authStore.getState().token).toBe(mockToken);
+		});
+
+		it("should set token to null", () => {
+			authStore.getState().setToken("mock-token");
+			expect(authStore.getState().token).toBe("mock-token");
+
+			authStore.getState().setToken(null);
+			expect(authStore.getState().token).toBeNull();
+		});
+	});
+
 	describe("setLoading", () => {
 		it("should set loading to true", () => {
 			authStore.getState().setLoading(true);
@@ -103,9 +123,11 @@ describe("authStore", () => {
 			};
 
 			authStore.getState().setUser(mockUser);
+			authStore.getState().setToken("mock-token");
 			authStore.getState().setLoading(true);
 
 			expect(authStore.getState().user).toEqual(mockUser);
+			expect(authStore.getState().token).toBe("mock-token");
 			expect(authStore.getState().isAuthenticated).toBe(true);
 			expect(authStore.getState().isLoading).toBe(true);
 
@@ -113,6 +135,7 @@ describe("authStore", () => {
 
 			const state = authStore.getState();
 			expect(state.user).toBeNull();
+			expect(state.token).toBeNull();
 			expect(state.isAuthenticated).toBe(false);
 			expect(state.isLoading).toBe(false);
 		});

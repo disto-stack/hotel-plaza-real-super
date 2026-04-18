@@ -25,27 +25,30 @@ const mockSupabase = {
 
 const mockUseAuthStore = {
 	user: null,
+	token: null,
 	isAuthenticated: false,
 	isLoading: false,
 	setUser: vi.fn(),
+	setToken: vi.fn(),
 	setLoading: vi.fn(),
 	logout: vi.fn(),
 };
+
+authStore.getState = vi.fn(() => mockUseAuthStore);
 
 describe("useAuth", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.mocked(createClient).mockReturnValue(mockSupabase as any);
 		vi.mocked(authStore).mockReturnValue(mockUseAuthStore);
+
+		mockSupabase.auth.getSession.mockResolvedValue({ data: { session: null } });
+		mockSupabase.auth.onAuthStateChange.mockReturnValue({
+			data: { subscription: { unsubscribe: vi.fn() } },
+		});
 	});
 
 	it("should initialize", () => {
-		mockSupabase.auth.onAuthStateChange.mockImplementation((_: any) => {
-			return {
-				data: { subscription: { unsubscribe: vi.fn() } },
-			};
-		});
-
 		const { result } = renderHook(() => useAuth());
 
 		expect(result.current.signOut).toBeDefined();
@@ -64,18 +67,13 @@ describe("useAuth", () => {
 		mockSupabase.auth.getSession.mockResolvedValue({
 			data: {
 				session: {
+					access_token: "mock-access-token",
 					user: {
 						id: "123",
 						email: "test@example.com",
 					},
 				},
 			},
-		});
-
-		mockSupabase.auth.onAuthStateChange.mockImplementation((_: any) => {
-			return {
-				data: { subscription: { unsubscribe: vi.fn() } },
-			};
 		});
 
 		mockSingle.mockResolvedValue({
@@ -90,6 +88,9 @@ describe("useAuth", () => {
 
 		await waitFor(() => {
 			expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(mockUser);
+			expect(mockUseAuthStore.setToken).toHaveBeenCalledWith(
+				"mock-access-token",
+			);
 		});
 
 		await waitFor(() => {
@@ -102,16 +103,13 @@ describe("useAuth", () => {
 			data: { session: null },
 		});
 
-		mockSupabase.auth.onAuthStateChange.mockImplementation((_: any) => {
-			return {
-				data: { subscription: { unsubscribe: vi.fn() } },
-			};
-		});
+		// onAuthStateChange is already mocked with default in beforeEach
 
 		renderHook(() => useAuth());
 
 		await waitFor(() => {
 			expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(null);
+			expect(mockUseAuthStore.setToken).toHaveBeenCalledWith(null);
 		});
 
 		await waitFor(() => {
@@ -145,6 +143,7 @@ describe("useAuth", () => {
 
 		if (authStateChangeCallback) {
 			await authStateChangeCallback("SIGNED_IN", {
+				access_token: "mock-access-token",
 				user: { id: "123", email: "test@example.com" },
 			});
 		}
@@ -155,6 +154,9 @@ describe("useAuth", () => {
 
 		await waitFor(() => {
 			expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(mockUser);
+			expect(mockUseAuthStore.setToken).toHaveBeenCalledWith(
+				"mock-access-token",
+			);
 		});
 	});
 
@@ -181,6 +183,7 @@ describe("useAuth", () => {
 
 		await waitFor(() => {
 			expect(mockUseAuthStore.setUser).toHaveBeenCalledWith(null);
+			expect(mockUseAuthStore.setToken).toHaveBeenCalledWith(null);
 		});
 	});
 
@@ -294,14 +297,6 @@ describe("useAuth", () => {
 	});
 
 	it("should handle unknown error code in sign in", async () => {
-		mockSupabase.auth.getSession.mockResolvedValue({
-			data: { session: null },
-		});
-
-		mockSupabase.auth.onAuthStateChange.mockReturnValue({
-			data: { subscription: { unsubscribe: vi.fn() } },
-		});
-
 		mockSupabase.auth.signInWithPassword.mockResolvedValue({
 			error: { message: "Unknown error", code: "unknown_code" },
 		});
