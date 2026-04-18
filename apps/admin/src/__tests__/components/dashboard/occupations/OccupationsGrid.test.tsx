@@ -1,11 +1,18 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import OccupationsGrid from "@/components/dashboard/occupations/OccupationsGrid";
 import {
 	type Occupation,
 	OccupationStatus,
 	StayType,
 } from "@/lib/types/occupation.types";
+
+vi.mock("@/components/dashboard/occupations/OccupationsCard", () => ({
+	__esModule: true,
+	default: ({ index }: { index: number }) => (
+		<div data-testid={`occupation-card-${index}`} />
+	),
+}));
 
 describe("OccupationsGrid", () => {
 	const occupations: Occupation[] = [
