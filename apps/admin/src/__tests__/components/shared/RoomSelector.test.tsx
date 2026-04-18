@@ -119,16 +119,13 @@ describe("RoomSelector", () => {
 	it("displays amenities with limit labels", () => {
 		render(<RoomSelector rooms={mockRooms} onChange={() => {}} />);
 
-		// Find the card for Room 101
 		const roomsList = screen.getByLabelText(/Habitaciones disponibles/i);
-		// biome-ignore lint/style/noNonNullAssertion: for testing purposes
 		const roomCard101 = within(roomsList)
 			.getByText("Habitación 101")
-			.closest("li")!;
+			.closest('div[role="presentation"]') as HTMLElement;
 
 		const utils = within(roomCard101);
 
-		// Room 101 has 4 amenities, should show 3 + (+1)
 		expect(utils.getByText("WiFi")).toBeInTheDocument();
 		expect(utils.getByText("TV")).toBeInTheDocument();
 		expect(utils.getByText("Mini Bar")).toBeInTheDocument();
