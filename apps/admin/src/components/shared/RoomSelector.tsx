@@ -115,9 +115,10 @@ export function RoomSelector({ rooms, value, onChange }: RoomSelectorProps) {
 				</nav>
 			</search>
 
-			<ul
+			<div
 				className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 max-h-[400px] overflow-y-auto pr-2 pb-2"
 				aria-label="Habitaciones disponibles"
+				role="listbox"
 			>
 				{displayRooms.map((room) => {
 					const isSelected = value === room.id;
@@ -127,7 +128,7 @@ export function RoomSelector({ rooms, value, onChange }: RoomSelectorProps) {
 					const cardStyle = isSelected ? styles.selected : styles.idle;
 
 					return (
-						<li key={room.id} className="h-full list-none">
+						<div key={room.id} className="h-full list-none" role="presentation">
 							<button
 								type="button"
 								role="option"
@@ -200,10 +201,10 @@ export function RoomSelector({ rooms, value, onChange }: RoomSelectorProps) {
 									</CardFooter>
 								</Card>
 							</button>
-						</li>
+						</div>
 					);
 				})}
-			</ul>
+			</div>
 			{displayRooms.length === 0 && (
 				<p className="text-center py-8 text-muted-foreground text-sm">
 					No se encontraron habitaciones.

@@ -98,7 +98,7 @@ export function OccupationsDrawer({
 						</article>
 					</section>
 					<DrawerFooter>
-						<Button onClick={() => setEditModalOpen(true)}>Edicion</Button>
+						<Button onClick={() => setEditModalOpen(true)}>Editar</Button>
 						<DrawerClose asChild>
 							<Button variant="outline">Cerrar</Button>
 						</DrawerClose>
@@ -106,6 +106,7 @@ export function OccupationsDrawer({
 				</DrawerContent>
 			</Drawer>
 
+			{/* TODO: pass occupation to edit modal when the last one is done */}
 			<CreateEditOccupationsDialog
 				open={editModalOpen}
 				setOpen={setEditModalOpen}
