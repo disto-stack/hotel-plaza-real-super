@@ -43,7 +43,7 @@ describe("useAvailableRooms hook", () => {
 		);
 
 		expect(roomsApi.getAvailableRooms).not.toHaveBeenCalled();
-		expect(result.current.isEnabled).toBe(false); // Wait, useQuery returned object has enable status? Wait, react query useQuery result doesn't have `isEnabled`, but the query status is 'pending' and isFetching is false.
+		expect(result.current.fetchStatus).toBe("idle");
 		expect(result.current.isFetching).toBe(false);
 	});
 
