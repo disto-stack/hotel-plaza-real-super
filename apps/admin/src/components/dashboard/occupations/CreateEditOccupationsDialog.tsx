@@ -25,10 +25,8 @@ export default function CreateEditOccupationsDialog({
 	const [stayType, setStayType] = useState<StayType>(StayType.NIGHTLY);
 	const [selectedRoomId, setSelectedRoomId] = useState("");
 
-	const {
-		data: availableRooms,
-		isFetching: isLoadingRooms,
-	} = useAvailableRooms(checkIn || undefined, checkOut || undefined);
+	const { data: availableRooms, isFetching: isLoadingRooms } =
+		useAvailableRooms(checkIn || undefined, checkOut || undefined);
 
 	function handleCheckInChange(value: string) {
 		setCheckIn(value);
@@ -76,4 +74,3 @@ export default function CreateEditOccupationsDialog({
 		</Dialog>
 	);
 }
-

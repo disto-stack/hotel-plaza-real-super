@@ -21,9 +21,12 @@ export function RoomsAvailabilityPlaceholder({
 				<div className="flex flex-col items-center justify-center gap-3 py-12 text-muted-foreground border border-dashed rounded-xl">
 					<CalendarIcon className="size-10 opacity-40 text-muted-foreground" />
 					<div className="flex flex-col items-center gap-1">
-						<span className="text-sm font-semibold text-foreground">Selecciona las fechas primero</span>
+						<span className="text-sm font-semibold text-foreground">
+							Selecciona las fechas primero
+						</span>
 						<span className="text-xs text-center text-muted-foreground max-w-xs px-4">
-							Elige un check-in y check-out válidos para ver qué habitaciones están libres.
+							Elige un check-in y check-out válidos para ver qué habitaciones
+							están libres.
 						</span>
 					</div>
 				</div>
@@ -42,7 +45,9 @@ export function RoomsAvailabilityPlaceholder({
 				</header>
 				<div className="flex flex-col items-center justify-center gap-3 py-12 text-muted-foreground border border-dashed rounded-xl">
 					<Loader2Icon className="size-8 animate-spin text-primary opacity-80" />
-					<span className="text-sm mt-2">Buscando habitaciones disponibles…</span>
+					<span className="text-sm mt-2">
+						Buscando habitaciones disponibles…
+					</span>
 				</div>
 			</div>
 		);

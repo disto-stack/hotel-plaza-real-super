@@ -9,8 +9,8 @@ export function useAvailableRooms(checkIn?: string, checkOut?: string) {
 		queryKey: ["rooms", "available", checkIn, checkOut],
 		queryFn: () =>
 			roomsApi.getAvailableRooms({
-				checkIn: checkIn!,
-				checkOut: checkOut!,
+				checkIn: checkIn as string,
+				checkOut: checkOut as string,
 			}),
 		enabled: isAuthenticated && !!checkIn && !!checkOut,
 		staleTime: 1000 * 60 * 2,

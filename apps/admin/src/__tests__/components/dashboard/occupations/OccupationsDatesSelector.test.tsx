@@ -24,7 +24,12 @@ describe("OccupationsDatesSelector", () => {
 
 	it("should call onCheckInChange when check-in value changes", () => {
 		const onCheckInChange = vi.fn();
-		render(<OccupationsDatesSelector {...defaultProps} onCheckInChange={onCheckInChange} />);
+		render(
+			<OccupationsDatesSelector
+				{...defaultProps}
+				onCheckInChange={onCheckInChange}
+			/>,
+		);
 
 		const checkInInput = screen.getByLabelText("Check-in *");
 		fireEvent.change(checkInInput, { target: { value: "2026-06-19T23:00" } });
@@ -34,7 +39,12 @@ describe("OccupationsDatesSelector", () => {
 
 	it("should call onCheckOutChange when check-out value changes", () => {
 		const onCheckOutChange = vi.fn();
-		render(<OccupationsDatesSelector {...defaultProps} onCheckOutChange={onCheckOutChange} />);
+		render(
+			<OccupationsDatesSelector
+				{...defaultProps}
+				onCheckOutChange={onCheckOutChange}
+			/>,
+		);
 
 		const checkOutInput = screen.getByLabelText("Check-out *");
 		fireEvent.change(checkOutInput, { target: { value: "2026-06-22T23:00" } });
@@ -44,7 +54,12 @@ describe("OccupationsDatesSelector", () => {
 
 	it("should call onStayTypeChange when stay type selection changes", () => {
 		const onStayTypeChange = vi.fn();
-		render(<OccupationsDatesSelector {...defaultProps} onStayTypeChange={onStayTypeChange} />);
+		render(
+			<OccupationsDatesSelector
+				{...defaultProps}
+				onStayTypeChange={onStayTypeChange}
+			/>,
+		);
 
 		const stayTypeSelect = screen.getByLabelText("Tipo de estancia");
 		fireEvent.change(stayTypeSelect, { target: { value: StayType.HOURLY } });
@@ -81,7 +96,9 @@ describe("OccupationsDatesSelector", () => {
 	});
 
 	it("should show 'Selecciona fechas' when dates are missing", () => {
-		render(<OccupationsDatesSelector {...defaultProps} checkIn="" checkOut="" />);
+		render(
+			<OccupationsDatesSelector {...defaultProps} checkIn="" checkOut="" />,
+		);
 
 		const durationInput = screen.getByLabelText("Duración");
 		expect(durationInput).toHaveValue("Selecciona fechas");

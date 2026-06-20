@@ -38,9 +38,11 @@ describe("CreateEditOccupationsDialog", () => {
 		});
 
 		expect(screen.getByText("Crear ocupación")).toBeInTheDocument();
-		
+
 		expect(screen.queryByTestId("mock-room-selector")).not.toBeInTheDocument();
-		expect(screen.getByText("Selecciona las fechas primero")).toBeInTheDocument();
+		expect(
+			screen.getByText("Selecciona las fechas primero"),
+		).toBeInTheDocument();
 
 		const checkInInput = screen.getByLabelText("Check-in *");
 		const checkOutInput = screen.getByLabelText("Check-out *");

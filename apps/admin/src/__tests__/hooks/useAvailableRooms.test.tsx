@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useAvailableRooms } from "@/hooks/useAvailableRooms";
 import { roomsApi } from "@/lib/api/rooms";
 import { authStore } from "@/store/authStore";
@@ -50,10 +50,9 @@ describe("useAvailableRooms hook", () => {
 	it("should not call getAvailableRooms if checkIn or checkOut is missing", async () => {
 		mockAuthStore.isAuthenticated = true;
 
-		const { result } = renderHook(
-			() => useAvailableRooms("", ""),
-			{ wrapper: createWrapper() },
-		);
+		const { result } = renderHook(() => useAvailableRooms("", ""), {
+			wrapper: createWrapper(),
+		});
 
 		expect(roomsApi.getAvailableRooms).not.toHaveBeenCalled();
 		expect(result.current.isFetching).toBe(false);

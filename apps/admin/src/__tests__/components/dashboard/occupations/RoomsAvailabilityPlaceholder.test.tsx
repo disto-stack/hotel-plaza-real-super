@@ -13,9 +13,13 @@ describe("RoomsAvailabilityPlaceholder", () => {
 
 		expect(screen.getByText("Seleccionar habitación *")).toBeInTheDocument();
 		expect(
-			screen.getByText("Elige tus fechas arriba para ver las habitaciones disponibles"),
+			screen.getByText(
+				"Elige tus fechas arriba para ver las habitaciones disponibles",
+			),
 		).toBeInTheDocument();
-		expect(screen.getByText("Selecciona las fechas primero")).toBeInTheDocument();
+		expect(
+			screen.getByText("Selecciona las fechas primero"),
+		).toBeInTheDocument();
 		expect(
 			screen.getByText(
 				"Elige un check-in y check-out válidos para ver qué habitaciones están libres.",
@@ -32,8 +36,12 @@ describe("RoomsAvailabilityPlaceholder", () => {
 		);
 
 		expect(screen.getByText("Seleccionar habitación *")).toBeInTheDocument();
-		expect(screen.getByText("Buscando habitaciones disponibles...")).toBeInTheDocument();
-		expect(screen.getByText("Buscando habitaciones disponibles…")).toBeInTheDocument();
+		expect(
+			screen.getByText("Buscando habitaciones disponibles..."),
+		).toBeInTheDocument();
+		expect(
+			screen.getByText("Buscando habitaciones disponibles…"),
+		).toBeInTheDocument();
 	});
 
 	it("should render null when dates are valid and not loading", () => {
