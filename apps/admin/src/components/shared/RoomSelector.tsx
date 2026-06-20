@@ -83,7 +83,7 @@ export function RoomSelector({ rooms, value, onChange }: RoomSelectorProps) {
 			<header className="flex flex-col gap-1">
 				<h3 className="text-sm font-semibold">Seleccionar habitación *</h3>
 				<p className="text-muted-foreground text-xs">
-					Elige entre {rooms.length} habitaciones disponibles
+					{rooms.length} {rooms.length === 1 ? "habitación disponible" : "habitaciones disponibles"} para tus fechas seleccionadas
 				</p>
 			</header>
 

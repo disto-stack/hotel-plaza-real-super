@@ -35,9 +35,37 @@ Deno.serve(async (req) => {
 			Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 		);
 
-		const { data: rooms, error: roomsError } = await supabaseAdmin
+		const url = new URL(req.url);
+		const checkIn = url.searchParams.get("checkIn");
+		const checkOut = url.searchParams.get("checkOut");
+
+		let roomsQuery = supabaseAdmin
 			.from("rooms")
-			.select("*");
+			.select("*")
+			.is("deleted_at", null);
+
+		if (checkIn && checkOut) {
+			const { data: busyRooms, error: busyRoomsError } = await supabaseAdmin
+				.from("occupations")
+				.select("room_id")
+				.in("status", ["reserved", "checked_in"])
+				.is("deleted_at", null)
+				.lt("check_in_datetime", checkOut)
+				.gt("check_out_datetime", checkIn);
+
+			if (busyRoomsError) {
+				return ResponseBuilder.internalServerError(
+					`Error checking room availability: ${busyRoomsError.message}`,
+				);
+			}
+
+			if (busyRooms && busyRooms.length > 0) {
+				const busyIds = busyRooms.map((o: { room_id: string }) => o.room_id);
+				roomsQuery = roomsQuery.not("id", "in", `(${busyIds.join(",")})`);
+			}
+		}
+
+		const { data: rooms, error: roomsError } = await roomsQuery;
 
 		if (roomsError) {
 			return ResponseBuilder.internalServerError(

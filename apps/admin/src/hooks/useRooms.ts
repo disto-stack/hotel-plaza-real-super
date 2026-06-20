@@ -11,4 +11,6 @@ export function useRooms() {
 		staleTime: 1000 * 60 * 5,
 		enabled: isAuthenticated,
 	});
+
+	
 }
