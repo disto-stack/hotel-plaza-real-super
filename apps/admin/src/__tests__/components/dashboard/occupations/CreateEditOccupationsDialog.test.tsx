@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import CreateEditOccupationsDialog from "@/components/dashboard/occupations/CreateEditOccupationsDialog";
-import { useRooms } from "@/hooks/useRooms";
+import { useAvailableRooms } from "@/hooks/useAvailableRooms";
 
-vi.mock("@/hooks/useRooms", () => ({
-	useRooms: vi.fn(),
+vi.mock("@/hooks/useAvailableRooms", () => ({
+	useAvailableRooms: vi.fn(),
 }));
 
 vi.mock("@/components/shared/RoomSelector", () => ({
@@ -28,9 +28,9 @@ describe("CreateEditOccupationsDialog", () => {
 	const mockSetOpen = vi.fn();
 
 	it("should render the dialog when open", () => {
-		vi.mocked(useRooms).mockReturnValue({
+		vi.mocked(useAvailableRooms).mockReturnValue({
 			data: [],
-			isLoading: false,
+			isFetching: false,
 		} as any);
 
 		render(<CreateEditOccupationsDialog open={true} setOpen={mockSetOpen} />, {
@@ -38,6 +38,17 @@ describe("CreateEditOccupationsDialog", () => {
 		});
 
 		expect(screen.getByText("Crear ocupación")).toBeInTheDocument();
+
+		expect(screen.queryByTestId("mock-room-selector")).not.toBeInTheDocument();
+		expect(
+			screen.getByText("Selecciona las fechas primero"),
+		).toBeInTheDocument();
+
+		const checkInInput = screen.getByLabelText("Check-in *");
+		const checkOutInput = screen.getByLabelText("Check-out *");
+		fireEvent.change(checkInInput, { target: { value: "2026-06-19T23:00" } });
+		fireEvent.change(checkOutInput, { target: { value: "2026-06-22T23:00" } });
+
 		expect(screen.getByTestId("mock-room-selector")).toBeInTheDocument();
 	});
 
@@ -51,14 +62,20 @@ describe("CreateEditOccupationsDialog", () => {
 
 	it("should pass rooms to RoomSelector", () => {
 		const mockRooms = [{ id: "1", roomNumber: "101" }];
-		vi.mocked(useRooms).mockReturnValue({
+		vi.mocked(useAvailableRooms).mockReturnValue({
 			data: mockRooms,
-			isLoading: false,
+			isFetching: false,
 		} as any);
 
 		render(<CreateEditOccupationsDialog open={true} setOpen={mockSetOpen} />, {
 			wrapper,
 		});
+
+		// Fill in valid dates
+		const checkInInput = screen.getByLabelText("Check-in *");
+		const checkOutInput = screen.getByLabelText("Check-out *");
+		fireEvent.change(checkInInput, { target: { value: "2026-06-19T23:00" } });
+		fireEvent.change(checkOutInput, { target: { value: "2026-06-22T23:00" } });
 
 		expect(screen.getByTestId("mock-room-selector")).toBeInTheDocument();
 	});

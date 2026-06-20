@@ -17,7 +17,7 @@ vi.mock("@/lib/formatters", () => ({
 vi.mock("@/lib/icon-utils", () => ({
 	getStayTypeIcon: vi
 		.fn()
-		.mockReturnValue(<span data-testid="stay-type-icon" />),
+		.mockImplementation(() => <span data-testid="stay-type-icon" />),
 }));
 
 vi.mock("@/lib/utils", () => ({
