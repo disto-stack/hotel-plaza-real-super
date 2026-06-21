@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: For mocking */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -9,6 +8,10 @@ import type { Guest } from "@/lib/types/guest.types";
 vi.mock("@/hooks/useGuests", () => ({
 	useGuests: vi.fn(),
 	useCreateGuest: vi.fn(),
+}));
+
+vi.mock("@/hooks/useDebounce", () => ({
+	useDebounce: vi.fn((value) => value),
 }));
 
 vi.mock("sonner", () => ({
@@ -51,7 +54,12 @@ describe("Guests Page Content", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.mocked(useGuests).mockReturnValue({
-			data: [],
+			data: {
+				guests: [],
+				totalCount: 0,
+				page: 1,
+				limit: 10,
+			},
 			isLoading: false,
 			error: null,
 			isSuccess: true,
@@ -155,7 +163,12 @@ describe("Guests Page Content", () => {
 
 	it("should render guests table when guests data is available", () => {
 		vi.mocked(useGuests).mockReturnValue({
-			data: mockGuests,
+			data: {
+				guests: mockGuests,
+				totalCount: mockGuests.length,
+				page: 1,
+				limit: 10,
+			},
 			isLoading: false,
 			error: null,
 			isSuccess: true,
@@ -186,7 +199,12 @@ describe("Guests Page Content", () => {
 
 	it("should not show loading or error when guests are loaded successfully", () => {
 		vi.mocked(useGuests).mockReturnValue({
-			data: mockGuests,
+			data: {
+				guests: mockGuests,
+				totalCount: mockGuests.length,
+				page: 1,
+				limit: 10,
+			},
 			isLoading: false,
 			error: null,
 			isSuccess: true,
@@ -212,7 +230,12 @@ describe("Guests Page Content", () => {
 
 	it("should not render table when guests array is empty", () => {
 		vi.mocked(useGuests).mockReturnValue({
-			data: [],
+			data: {
+				guests: [],
+				totalCount: 0,
+				page: 1,
+				limit: 10,
+			},
 			isLoading: false,
 			error: null,
 			isSuccess: true,
@@ -230,5 +253,38 @@ describe("Guests Page Content", () => {
 
 		expect(screen.queryByText("John")).not.toBeInTheDocument();
 		expect(screen.queryByText("Jane")).not.toBeInTheDocument();
+	});
+
+	it("should render pagination controls and handle page navigation", async () => {
+		const user = userEvent.setup();
+		vi.mocked(useGuests).mockReturnValue({
+			data: {
+				guests: mockGuests,
+				totalCount: 25,
+				page: 1,
+				limit: 10,
+			},
+			isLoading: false,
+			error: null,
+			isSuccess: true,
+			isError: false,
+			isPending: false,
+		} as any);
+
+		render(<GuestsContent />);
+
+		expect(screen.getByTestId("prev-page-button")).toBeDisabled();
+		const nextButton = screen.getByTestId("next-page-button");
+		expect(nextButton).toBeEnabled();
+		expect(screen.getByTestId("page-indicator")).toHaveTextContent(
+			"Página 1 de 3",
+		);
+
+		await user.click(nextButton);
+		expect(useGuests).toHaveBeenLastCalledWith({
+			page: 2,
+			limit: 10,
+			search: "",
+		});
 	});
 });

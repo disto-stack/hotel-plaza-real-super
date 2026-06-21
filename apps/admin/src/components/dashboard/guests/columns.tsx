@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Guest } from "@/lib/types/guest.types";
+import type { GuestResponse } from "@/lib/types/guest.types";
 
-export const columns: ColumnDef<Guest>[] = [
+export const columns: ColumnDef<GuestResponse>[] = [
 	{
 		header: "Nombres",
 		accessorKey: "firstName",

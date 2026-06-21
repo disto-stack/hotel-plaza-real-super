@@ -49,9 +49,30 @@ Deno.serve(async (req) => {
 			return ResponseBuilder.forbidden("Only admins can get guests");
 		}
 
-		const { data: guests, error: guestsError } = await supabaseAdmin
-			.from("guests")
-			.select("*");
+		const url = new URL(req.url);
+		const pageParsed = parseInt(url.searchParams.get("page") ?? "1", 10);
+		const limitParsed = parseInt(url.searchParams.get("limit") ?? "10", 10);
+		const page = Number.isNaN(pageParsed) || pageParsed < 1 ? 1 : pageParsed;
+		const limit =
+			Number.isNaN(limitParsed) || limitParsed < 1 ? 10 : limitParsed;
+		const search = url.searchParams.get("search") ?? "";
+
+		let query = supabaseAdmin.from("guests").select("*", { count: "exact" });
+
+		if (search) {
+			query = query.or(
+				`first_name.ilike.%${search}%,last_name.ilike.%${search}%,document_number.ilike.%${search}%,email.ilike.%${search}%`,
+			);
+		}
+
+		const from = (page - 1) * limit;
+		const to = from + limit - 1;
+
+		const {
+			data: guests,
+			count,
+			error: guestsError,
+		} = await query.range(from, to);
 
 		if (guestsError) {
 			return ResponseBuilder.internalServerError(
@@ -59,9 +80,14 @@ Deno.serve(async (req) => {
 			);
 		}
 
-		const camelCaseGuests = guestsToApiArray(guests);
+		const camelCaseGuests = guestsToApiArray(guests ?? []);
 		return ResponseBuilder.success(
-			camelCaseGuests,
+			{
+				guests: camelCaseGuests,
+				totalCount: count ?? 0,
+				page,
+				limit,
+			},
 			"Guests fetched successfully",
 		);
 	} catch (error) {

@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+	GuestSelector,
+	type SelectedGuest,
+} from "@/components/dashboard/guests/GuestSelector";
 import { RoomSelector } from "@/components/shared/RoomSelector";
 import {
 	Dialog,
@@ -24,6 +28,7 @@ export default function CreateEditOccupationsDialog({
 	const [checkOut, setCheckOut] = useState("");
 	const [stayType, setStayType] = useState<StayType>(StayType.NIGHTLY);
 	const [selectedRoomId, setSelectedRoomId] = useState("");
+	const [selectedGuests, setSelectedGuests] = useState<SelectedGuest[]>([]);
 
 	const { data: availableRooms, isFetching: isLoadingRooms } =
 		useAvailableRooms(checkIn || undefined, checkOut || undefined);
@@ -69,6 +74,13 @@ export default function CreateEditOccupationsDialog({
 							onChange={setSelectedRoomId}
 						/>
 					)}
+
+					<hr className="border-border" />
+
+					<GuestSelector
+						selectedGuests={selectedGuests}
+						onChange={setSelectedGuests}
+					/>
 				</section>
 			</DialogContent>
 		</Dialog>

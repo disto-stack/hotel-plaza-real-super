@@ -36,3 +36,10 @@ export interface CreateGuestData {
 	nationality?: string;
 	occupation: string;
 }
+
+export interface GetGuestsResponse {
+	guests: GuestResponse[];
+	totalCount: number;
+	page: number;
+	limit: number;
+}

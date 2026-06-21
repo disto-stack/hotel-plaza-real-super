@@ -121,7 +121,29 @@ describe("guestsApi", () => {
 
 			const result = await guestsApi.getGuests();
 
-			expect(api.get).toHaveBeenCalledWith("/get-guests");
+			expect(api.get).toHaveBeenCalledWith("/get-guests", {
+				params: undefined,
+				signal: undefined,
+			});
+			expect(result).toEqual(mockResponse.data.data);
+		});
+
+		it("should call GET /get-guests with parameters and signal", async () => {
+			const mockResponse = {
+				data: { data: { guests: [], totalCount: 0, page: 1, limit: 10 } },
+			};
+			(api.get as Mock).mockResolvedValue(mockResponse);
+
+			const signal = new AbortController().signal;
+			const result = await guestsApi.getGuests(
+				{ page: 2, limit: 5, search: "alice" },
+				{ signal },
+			);
+
+			expect(api.get).toHaveBeenCalledWith("/get-guests", {
+				params: { page: 2, limit: 5, search: "alice" },
+				signal,
+			});
 			expect(result).toEqual(mockResponse.data.data);
 		});
 
