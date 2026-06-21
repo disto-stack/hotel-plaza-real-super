@@ -69,7 +69,7 @@ describe("GuestCreateModal", () => {
 			await user.type(firstNameInput, "John");
 			await user.type(lastNameInput, "Doe");
 			await user.type(phoneInput, "1234567890");
-			await user.type(documentTypeInput, "National ID");
+			await user.selectOptions(documentTypeInput, "National ID");
 			await user.type(documentNumberInput, "1234567890");
 			await user.type(occupationInput, "Software Engineer");
 
@@ -147,7 +147,7 @@ describe("GuestCreateModal", () => {
 			await user.type(firstNameInput, "John");
 			await user.type(lastNameInput, "Doe");
 			await user.type(phoneInput, "1234567890");
-			await user.type(documentTypeInput, "National ID");
+			await user.selectOptions(documentTypeInput, "National ID");
 			await user.type(documentNumberInput, "1234567890");
 			await user.type(occupationInput, "Software Engineer");
 

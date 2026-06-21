@@ -11,7 +11,12 @@ export const guestCreateSchema = z.object({
 		"Citizenship Card",
 	]),
 	documentNumber: z.string().min(1, "El número de documento es requerido"),
-	occupation: z.string().min(1, "La ocupación es requerida"),
+	email: z
+		.string()
+		.email("El correo electrónico no es válido")
+		.optional()
+		.or(z.literal("")),
+	occupation: z.string().optional(),
 });
 
 export type GuestCreateFormData = z.infer<typeof guestCreateSchema>;

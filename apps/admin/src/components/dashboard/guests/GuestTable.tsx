@@ -1,11 +1,9 @@
-"use client";
-
 import { DataTable } from "@/components/shared/data-display/DataTable";
-import type { Guest } from "@/lib/types/guest.types";
+import type { GuestResponse } from "@/lib/types/guest.types";
 import { columns } from "./columns";
 
 interface GuestsTableProps {
-	guests: Guest[];
+	guests: GuestResponse[];
 }
 export default function GuestsTable({ guests }: GuestsTableProps) {
 	if (!guests.length) {

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import CreateEditOccupationsDialog from "@/components/dashboard/occupations/CreateEditOccupationsDialog";
 import { useAvailableRooms } from "@/hooks/useAvailableRooms";
@@ -10,6 +10,10 @@ vi.mock("@/hooks/useAvailableRooms", () => ({
 
 vi.mock("@/components/shared/RoomSelector", () => ({
 	RoomSelector: () => <div data-testid="mock-room-selector" />,
+}));
+
+vi.mock("@/components/dashboard/guests/GuestSelector", () => ({
+	GuestSelector: () => <div data-testid="mock-guest-selector" />,
 }));
 
 const queryClient = new QueryClient({
@@ -71,7 +75,6 @@ describe("CreateEditOccupationsDialog", () => {
 			wrapper,
 		});
 
-		// Fill in valid dates
 		const checkInInput = screen.getByLabelText("Check-in *");
 		const checkOutInput = screen.getByLabelText("Check-out *");
 		fireEvent.change(checkInInput, { target: { value: "2026-06-19T23:00" } });

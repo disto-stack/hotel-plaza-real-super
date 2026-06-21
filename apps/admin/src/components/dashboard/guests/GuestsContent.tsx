@@ -1,15 +1,31 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GuestCreateModal from "@/components/dashboard/guests/GuestCreateModal";
 import GuestsTable from "@/components/dashboard/guests/GuestTable";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/ui/SearchBar";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useGuests } from "@/hooks/useGuests";
 
 export default function GuestsContent() {
-	const { data: guests, isLoading, error } = useGuests();
+	const [search, setSearch] = useState("");
+	const [page, setPage] = useState(1);
+	const limit = 10;
+
+	const debouncedSearch = useDebounce(search, 300);
+
+	const { data, isLoading, error } = useGuests({
+		page,
+		limit,
+		search: debouncedSearch,
+	});
+
+	useEffect(() => {
+		setPage(1);
+	}, []);
+
 	const [openCreate, setOpenCreate] = useState(false);
 
 	return (
@@ -26,6 +42,9 @@ export default function GuestsContent() {
 					<SearchBar
 						className="w-10/12 xl:w-11/12"
 						placeholder="Buscar huésped por nombre, apellido o número de documento"
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+						data-testid="search-bar-input"
 					/>
 
 					<Button
@@ -48,7 +67,43 @@ export default function GuestsContent() {
 						No se pudieron cargar los huéspedes. Por favor, intente nuevamente.
 					</div>
 				)}
-				{guests && <GuestsTable guests={guests} />}
+				{data?.guests && <GuestsTable guests={data.guests} />}
+
+				{data && data.totalCount > 0 && (
+					<div className="flex items-center justify-between pt-4 border-t border-border mt-4">
+						<span className="text-sm text-muted-foreground font-sans">
+							Mostrando {Math.min((page - 1) * limit + 1, data.totalCount)} -{" "}
+							{Math.min(page * limit, data.totalCount)} de {data.totalCount}{" "}
+							huéspedes
+						</span>
+						<div className="flex items-center gap-2">
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => setPage((p) => Math.max(p - 1, 1))}
+								disabled={page === 1}
+								data-testid="prev-page-button"
+							>
+								Anterior
+							</Button>
+							<span
+								className="text-sm font-medium font-sans px-2"
+								data-testid="page-indicator"
+							>
+								Página {page} de {Math.ceil(data.totalCount / limit) || 1}
+							</span>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => setPage((p) => p + 1)}
+								disabled={page * limit >= data.totalCount}
+								data-testid="next-page-button"
+							>
+								Siguiente
+							</Button>
+						</div>
+					</div>
+				)}
 			</section>
 			<GuestCreateModal
 				open={openCreate}

@@ -1,35 +1,35 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import GuestsTable from "@/components/dashboard/guests/GuestTable";
-import type { Guest } from "@/lib/types/guest.types";
+import type { GuestResponse } from "@/lib/types/guest.types";
 
 describe("GuestsTable", () => {
-	const mockGuests: Guest[] = [
+	const mockGuests: GuestResponse[] = [
 		{
 			id: "1",
-			first_name: "John",
-			last_name: "Doe",
+			firstName: "John",
+			lastName: "Doe",
 			email: "john@example.com",
 			phone: "1234567890",
-			document_type: "DNI",
-			document_number: "12345678",
+			documentType: "DNI",
+			documentNumber: "12345678",
 			nationality: "Peru",
 			occupation: "Engineer",
-			created_at: "2024-01-01T00:00:00Z",
-			updated_at: "2024-01-01T00:00:00Z",
+			createdAt: "2024-01-01T00:00:00Z",
+			updatedAt: "2024-01-01T00:00:00Z",
 		},
 		{
 			id: "2",
-			first_name: "Jane",
-			last_name: "Smith",
+			firstName: "Jane",
+			lastName: "Smith",
 			email: "jane@example.com",
 			phone: "0987654321",
-			document_type: "CE",
-			document_number: "87654321",
+			documentType: "CE",
+			documentNumber: "87654321",
 			nationality: "Colombia",
 			occupation: "Designer",
-			created_at: "2024-01-02T00:00:00Z",
-			updated_at: "2024-01-02T00:00:00Z",
+			createdAt: "2024-01-02T00:00:00Z",
+			updatedAt: "2024-01-02T00:00:00Z",
 		},
 	];
 
@@ -84,7 +84,7 @@ describe("GuestsTable", () => {
 	});
 
 	it("should handle single guest correctly", () => {
-		const singleGuest: Guest[] = [mockGuests[0]];
+		const singleGuest: GuestResponse[] = [mockGuests[0]];
 		render(<GuestsTable guests={singleGuest} />);
 
 		const tableBody = screen.getByRole("table").querySelector("tbody");

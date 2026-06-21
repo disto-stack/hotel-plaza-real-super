@@ -2,12 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { guestsApi } from "@/lib/api/guests";
 import { authStore } from "@/store/authStore";
 
-export function useGuests() {
+export function useGuests(params?: {
+	page?: number;
+	limit?: number;
+	search?: string;
+}) {
 	const { isAuthenticated } = authStore();
 
 	return useQuery({
-		queryKey: ["guests"],
-		queryFn: guestsApi.getGuests,
+		queryKey: ["guests", params],
+		queryFn: ({ signal }) => guestsApi.getGuests(params, { signal }),
 		staleTime: 1000 * 60 * 5,
 		enabled: isAuthenticated,
 	});

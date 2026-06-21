@@ -1,13 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { GuestForm } from "@/components/dashboard/guests/GuestForm";
 import { Button } from "@/components/ui/button";
-import { FormField } from "@/components/ui/FormField";
-import { Input } from "@/components/ui/Input";
-import { Select } from "@/components/ui/Select";
 import { useCreateGuest } from "@/hooks/useGuests";
 import { extractErrorMessage } from "@/lib/error-handler";
 import {
@@ -25,13 +22,6 @@ export default function GuestCreateModal({
 	onClose,
 }: GuestCreateModalProps) {
 	const { mutateAsync, isPending } = useCreateGuest();
-
-	const firstNameId = useId();
-	const lastNameId = useId();
-	const phoneId = useId();
-	const documentTypeId = useId();
-	const documentNumberId = useId();
-	const occupationId = useId();
 
 	const {
 		register,
@@ -60,6 +50,7 @@ export default function GuestCreateModal({
 			documentType,
 			documentNumber,
 			occupation,
+			email,
 		} = data;
 
 		if (!firstName || !lastName || !documentType || !documentNumber) {
@@ -73,7 +64,8 @@ export default function GuestCreateModal({
 				phone,
 				documentType,
 				documentNumber,
-				occupation,
+				occupation: occupation || "Particular",
+				email: email || undefined,
 			});
 
 			toast.success("Huésped creado correctamente");
@@ -102,94 +94,7 @@ export default function GuestCreateModal({
 					className="p-5 space-y-4"
 					data-testid="guest-create-form"
 				>
-					<section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormField
-							label="Nombre"
-							htmlFor={firstNameId}
-							required
-							error={errors.firstName?.message}
-						>
-							<Input
-								id={firstNameId}
-								{...register("firstName")}
-								placeholder="Juan Manuel"
-								data-testid="first-name-input"
-							/>
-						</FormField>
-
-						<FormField
-							label="Apellido"
-							htmlFor={lastNameId}
-							required
-							error={errors.lastName?.message}
-						>
-							<Input
-								id={lastNameId}
-								{...register("lastName")}
-								placeholder="Pérez"
-								data-testid="last-name-input"
-							/>
-						</FormField>
-
-						<FormField
-							label="Teléfono"
-							htmlFor={phoneId}
-							required
-							error={errors.phone?.message}
-						>
-							<Input
-								id={phoneId}
-								{...register("phone")}
-								placeholder="3104951906"
-								data-testid="phone-input"
-							/>
-						</FormField>
-
-						<FormField
-							label="Tipo de documento"
-							htmlFor={documentTypeId}
-							required
-							error={errors.documentType?.message}
-						>
-							<Select
-								id={documentTypeId}
-								{...register("documentType")}
-								data-testid="document-type-input"
-							>
-								<option value="National ID">Cédula de ciudadanía</option>
-								<option value="Identity Card">Tarjeta de identidad</option>
-								<option value="Passport">Pasaporte</option>
-							</Select>
-						</FormField>
-
-						<FormField
-							label="Número de documento"
-							htmlFor={documentNumberId}
-							required
-							error={errors.documentNumber?.message}
-						>
-							<Input
-								id={documentNumberId}
-								{...register("documentNumber")}
-								placeholder="00000000"
-								data-testid="document-number-input"
-							/>
-						</FormField>
-
-						<FormField
-							label="Ocupación"
-							htmlFor={occupationId}
-							required
-							error={errors.occupation?.message}
-						>
-							<Input
-								id={occupationId}
-								{...register("occupation")}
-								placeholder="Estudiante"
-								data-testid="occupation-input"
-							/>
-						</FormField>
-					</section>
+					<GuestForm register={register} errors={errors} />
 
 					<section className="flex justify-end gap-2 pt-2">
 						<Button
